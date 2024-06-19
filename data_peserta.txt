@@ -1,0 +1,6 @@
+Data Peserta Super Bootcamp Laravel Vue Development
+1. Nama: Moch Satria Dhapa Hamdani
+2. Email: satriadhapa10@gmail.com
+3. Sistem Operasi yang digunakan: windows 10
+4. Akun Gitlab/Github: github.com/satriadhapa
+5. Akun Telegram: @satriaDhapa
