@@ -1,0 +1,4 @@
+<?php
+    $satria = "nama orang";
+    echo $satria;
+?>
