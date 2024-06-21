@@ -1,0 +1,31 @@
+1. buat tabel
+- tabel genre
+CREATE TABLE genre ( id INT PRIMARY KEY AUTO_INCREMENT, name VARCHAR(255) NOT NULL );
+
+- tabel movie
+CREATE TABLE movie ( id INT PRIMARY KEY AUTO_INCREMENT, title VARCHAR(255) NOT NULL, summary TEXT, year INT, poster VARCHAR(255), genre_id INT, FOREIGN KEY (genre_id) REFERENCES genre(id) );
+
+2. insert data
+- insert data tabel genre
+insert into genre (name) values ('action'),('drama');
+
+-insert data table movie
+INSERT INTO movie 
+    (title, summary, year, poster, genre_id) 
+VALUES ('Movie 1 Action', 'Summary of Movie 1 Action', 2023, 'poster1.jpg', 1), 
+       ('Movie 2 Action', 'Summary of Movie 2 Action', 2024, 'poster2.jpg', 1), 
+       ('Movie 1 Drama', 'Summary of Movie 1 Drama', 2022, 'poster3.jpg', 2), 
+       ('Movie 2 Action', 'Summary of Movie 2 Action', 2023, 'poster4.jpg', 1), 
+       ('Movie 3 Drama', 'Summary of Movie 3 Drama', 2024, 'poster5.jpg', 2);
+
+3. select data
+- Tampilan semua movie dengan genre Action
+SELECT m.title, m.summary, m.year, m.poster, g.name as genre 
+FROM movie m 
+JOIN genre g ON m.genre_id = g.id 
+WHERE g.name = "action";
+
+- Join untuk mengabungkan table Movie dan Genre
+SELECT m.title, m.summary, m.poster, g.name AS genre 
+FROM movie m 
+JOIN genre g ON m.genre_id = g.id;
