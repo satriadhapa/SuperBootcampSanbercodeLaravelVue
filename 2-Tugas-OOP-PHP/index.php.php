@@ -16,10 +16,11 @@ abstract class Hewan
     }
     public function getInfoHewan()
     {
-        echo "nama: {$this->nama}\n";
-        echo "Darah: {$this->darah}\n";
-        echo "Jumlah kaki: {$this->jumlahkaki}\n";
-        echo "Keahlian: {$this->keahlian}\n";
+        echo "-------------------- <br>";
+        echo "nama: {$this->nama}<br>";
+        echo "Darah: {$this->darah}<br>";
+        echo "Jumlah kaki: {$this->jumlahkaki}<br>";
+        echo "Keahlian: {$this->keahlian}<br>";
     }
 }
 trait Fight
@@ -88,12 +89,16 @@ class Harimau extends Hewan
 //eksekusi class
 $elang = new Elang("Elang Jawa");
 $harimau = new Harimau("Harimau Sumatera");
+$harimau2 = new Harimau("Harimau jawa");
 
 $elang->atraksi();
 $harimau->atraksi();
+$harimau2->atraksi();
 
 $elang->serang($harimau);
 $harimau->serang($elang);
+$harimau2->serang($elang);
 
 $elang->getInfoHewan();
+$harimau->getInfoHewan();
 $harimau->getInfoHewan();
