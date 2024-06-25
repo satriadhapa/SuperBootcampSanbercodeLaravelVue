@@ -19,4 +19,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post("/v1/movie", [MovieController::class , 'store']);
+// Route::post("/v1/movie", [MovieController::class , 'store']);
+
+Route::prefix('api')->group(function () {
+    Route::post("/v1/movie", [MovieController::class, 'store']);
+});
