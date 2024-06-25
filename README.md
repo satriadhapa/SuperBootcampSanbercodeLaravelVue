@@ -1,2 +1,4 @@
 # BDS-SANBERCODE-LARAVEL-VUE
 SanberCode Laravel
+## DOKUMENTASI TESTING API LARAVEL DENGAN POSTMAN
+https://documenter.getpostman.com/view/36502041/2sA3XY6dfE
