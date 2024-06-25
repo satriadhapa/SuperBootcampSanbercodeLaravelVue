@@ -32,12 +32,12 @@ class MovieRequest extends FormRequest
     }
     public function messages()
     {
-        return[
-            'title.required' => 'Title is required',
-            'summary.required' => 'Summary is required',
-            'year.required' => 'Year is required',
-            'poster.mimes' => 'Only jpg, bmp, png files are allowed',
-            'genre_id.required' => 'Genre is required'
+        return [
+            'title.required' => 'Title tidak boleh kosong',
+            'summary.required' => 'Summary tidak boleh kosong',
+            'year.required' => 'Year tidak boleh kosong',
+            'poster.mimes' => 'hanya bisa upload format jpg, bmp, png ',
+            'genre_id.required' => 'Genre_id tidak boleh kosong'
 
         ];
     }

@@ -13,7 +13,7 @@ class MovieController extends Controller
         $validated = $request->validated();
 
         return response()->json([
-            'message' => 'Movie created successfully',
+            'message' => 'Data Movie created successfully',
             'data' => $validated
         ], 200);
     }
