@@ -3,6 +3,8 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\MovieController;
+use App\Http\Controllers\API\GenreController;
+use App\Http\Controllers\API\CastController;
 use App\Http\Requests\MovieRequest;
 /*
 |--------------------------------------------------------------------------
@@ -15,12 +17,14 @@ use App\Http\Requests\MovieRequest;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
 
 // Route::post("/v1/movie", [MovieController::class , 'store']);
 
-Route::prefix('api')->group(function () {
-    Route::post("/v1/movie", [MovieController::class, 'store']);
+Route::prefix("v1")->group(function () {
+    Route::post("/movie", [MovieController::class, 'store']);
+    Route::apiResource("genre",GenreController::class);
+    Route::apiResource("cast",CastController::class);
 });
