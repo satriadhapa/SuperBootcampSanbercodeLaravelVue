@@ -4,14 +4,9 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-<<<<<<< HEAD
 use App\Http\Requests\CastRequest;
 use App\Models\Cast;
-=======
-use App\Http\Requests\CastsRequest;
-use App\Models\Cast;
 
->>>>>>> origin
 class CastController extends Controller
 {
     /**
@@ -29,16 +24,12 @@ class CastController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-<<<<<<< HEAD
     public function store(CastRequest $request)
-=======
-    public function store(CastsRequest $request)
->>>>>>> origin
     {
         // $validated = $request->validated();
-        
+
         Cast::create($request->all());
-        
+
         return response()->json([
             'message' => 'Data cast berhasil ditambah',
             // 'data' => $validated
@@ -66,26 +57,18 @@ class CastController extends Controller
     /**
      * Update the specified resource in storage.
      */
-<<<<<<< HEAD
     public function update(CastRequest $request, string $id)
-=======
-    public function update(Request $request, string $id)
->>>>>>> origin
     {
         $casts = Cast::find($id);
-        
+
         if($casts){
             return response()->json([
                 "message" => 'id tidak ditemukan'  
             ], '404'); 
         }
         $casts->name = $request['name'];
- 
-<<<<<<< HEAD
-        $casts->update($request->all());
-=======
+
         $casts->save();
->>>>>>> origin
         return response()->json([
             'message' => "Data cast berhasil di update dengan id : $id",
             // 'data' => $validated
@@ -98,7 +81,7 @@ class CastController extends Controller
     public function destroy(string $id)
     {
         $casts = Cast::find($id);
-        
+
         if($casts){
             return response()->json([
                 "message" => 'id tidak ditemukan'  

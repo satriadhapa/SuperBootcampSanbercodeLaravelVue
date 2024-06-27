@@ -5,11 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Models\Genre;
 use Illuminate\Http\Request;
-<<<<<<< HEAD
 use App\Http\Requests\GenreRequest;
-=======
-use App\Http\Requests\GenresRequest;
->>>>>>> origin
 
 class GenreController extends Controller
 {
@@ -20,30 +16,20 @@ class GenreController extends Controller
     {
         $genres = Genre::all();
         return response()->json([
-<<<<<<< HEAD
-            "message" => "tampil semua data genre",
-            "data" => $genres
-        ], 201);
-=======
             "message" => "tampil semua data",
             "data" => $genres
         ]);
->>>>>>> origin
     }
 
     /**
      * Store a newly created resource in storage.
      */
-<<<<<<< HEAD
     public function store(GenreRequest $request)
-=======
-    public function store(GenresRequest $request)
->>>>>>> origin
     {
         // $validated = $request->validated();
-        
+
         Genre::create($request->all());
-        
+
         return response()->json([
             'message' => 'Data genre berhasil',
             // 'data' => $validated
@@ -71,21 +57,17 @@ class GenreController extends Controller
     /**
      * Update the specified resource in storage.
      */
-<<<<<<< HEAD
     public function update(GenreRequest $request, string $id)
-=======
-    public function update(Request $request, string $id)
->>>>>>> origin
     {
         $genres = Genre::find($id);
-        
+
         if($genres){
             return response()->json([
                 "message" => 'id tidak ditemukan'  
             ], '404'); 
         }
         $genres->name = $request['name'];
- 
+
         $genres->save();
         return response()->json([
             'message' => "Data genre berhasil di update dengan id : $id",
@@ -99,7 +81,7 @@ class GenreController extends Controller
     public function destroy(string $id)
     {
         $genres = Genre::find($id);
-        
+
         if($genres){
             return response()->json([
                 "message" => 'id tidak ditemukan'  
@@ -111,8 +93,4 @@ class GenreController extends Controller
             // 'data' => $validated
         ]);
     }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> origin
