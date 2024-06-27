@@ -6,22 +6,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 
-class Cast extends Model
+class Roles extends Model
 {
     use HasFactory, HasUuids;
-<<<<<<< HEAD
-=======
-
->>>>>>> origin
-    protected $table = 'casts';
+    protected $table = "roles";
     protected $fillable = [
-        'name',
-        'age',
-        'bio'
+        'name'
     ];
-<<<<<<< HEAD
-=======
-
-    // public $timestamps = false;
->>>>>>> origin
+    public $timestamps = false;
 }
