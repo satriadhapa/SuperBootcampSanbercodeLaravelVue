@@ -12,9 +12,4 @@ class Genre extends Model
 
     protected $table = 'genres';
     protected $fillable = ['name'];
-<<<<<<< HEAD
-=======
-
-    // public $timestamps = false;
->>>>>>> origin
 }

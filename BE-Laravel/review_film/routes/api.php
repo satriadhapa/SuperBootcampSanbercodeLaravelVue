@@ -23,8 +23,9 @@ use App\Http\Requests\MovieRequest;
 
 // Route::post("/v1/movie", [MovieController::class , 'store']);
 Route::prefix('v1')->group(function () {
-    Route::post("/movie", [MovieController::class, 'store']);
+    // Route::post("/movie", [MovieController::class, 'store']);
     Route::apiResource("genre", GenreController::class);
     Route::apiResource("cast", CastController::class);
+    Route::apiResource('movie', MovieController::class);
 
 });
