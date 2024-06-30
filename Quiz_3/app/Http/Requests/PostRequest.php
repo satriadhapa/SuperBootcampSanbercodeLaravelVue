@@ -3,6 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Http\Exceptions\HttpResponseException;
 
 class PostRequest extends FormRequest
 {
@@ -11,7 +13,7 @@ class PostRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,15 +24,23 @@ class PostRequest extends FormRequest
     public function rules(): array
     {
         return [
-            // 'title' => 'required|string|max:255',
-            // 'content' => 'required|text'
+            'title' => 'required|string',
+            'content' => 'required|text'
         ];
     }
-    // public function messages()
-    // {
-    //     // return[
-    //     //     'title.required' => 'title tidak boleh kosong',
-    //     //     'content.required' => 'content tidak boleh kosong'
-    //     // ];
-    // }
+    public function messages()
+    {
+        return[
+            'title.required' => 'title tidak boleh kosong',
+            'content.required' => 'content tidak boleh kosong'
+        ];
+    }
+    public function failedValidation(Validator $validator)
+    {
+        throw new HttpResponseException(response()->json([
+            'success' => false,
+            'message' => 'Validation errors',
+            'data'    => $validator->errors()
+        ], 422));
+    }
 }
