@@ -46,7 +46,7 @@ class GenreController extends Controller
         if($genres){
             return response()->json([
                 "message" => 'id tidak ditemukan'  
-            ], '404'); 
+            ], 404); 
         }
         return response()->json([
             "message" => "data id dengan id : $id ",

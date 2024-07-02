@@ -15,13 +15,10 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->string('title');
             $table->text('summary');
-            $table->integer('year')->nullable();
+            $table->string('year');
             $table->string('poster');
             $table->uuid('genre_id');
-            $table->foreign('genre_id')
-            ->references('id')
-            ->on('genres')
-            ->onUpdate('cascade')
+            $table->foreign('genre_id')->references('id')->on('genres')->onUpdate('cascade')
             ->onDelete('cascade');
         });
     }

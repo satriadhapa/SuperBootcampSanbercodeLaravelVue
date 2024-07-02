@@ -21,28 +21,28 @@ class MovieController extends Controller
     }
     public function store(MovieRequest $request){
 
-        $data = $request->validated();
+    //     $data = $request->validated();
 
-       // jika file gambar diinput
+    //    // jika file gambar diinput
 
-        if ($request->hasFile('image')) {
+    //     if ($request->hasFile('image')) {
 
-             // membuat unique name pada gamabr yang di input
+    //          // membuat unique name pada gamabr yang di input
             
-             $imageName = time().'.'.$request->image->extension();
+    //          $imageName = time().'.'.$request->image->extension();
 
-             // simpan gambar pada file storage
+    //          // simpan gambar pada file storage
 
-             $request->image->storeAs('public/images', $imageName);
+    //          $request->image->storeAs('public/images', $imageName);
 
-             // menganti request nilai request image menjadi $imageName yang baru bukan berdasarkan request
-             $path = env('APP_URL')."/storage/images/";
+    //          // menganti request nilai request image menjadi $imageName yang baru bukan berdasarkan request
+    //          $path = env('APP_URL')."/storage/images/";
 
-             $data['image'] = $path.$imageName;
+    //          $data['image'] = $path.$imageName;
 
-        }
+    //     }
 
-        Movie::create($data);
+    //     Movie::create($data);
 
         return response()->json([
             'message' => "data berhasil ditambah"

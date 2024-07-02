@@ -24,7 +24,7 @@ class MovieRequest extends FormRequest
         return [
             'title' => 'required|string|max:255',
             'summary' => 'required|string|min:3',
-            'year' => 'date',
+            'year' => 'required|string',
             'poster' => 'mimes:jpg,bmp,png',
             'genre_id' => 'required'
 
