@@ -43,7 +43,7 @@ class CastController extends Controller
     {
         $casts = Cast::find($id);
 
-        if($casts){
+        if(!$casts){
             return response()->json([
                 "message" => 'id tidak ditemukan'  
             ], '404'); 
@@ -61,14 +61,17 @@ class CastController extends Controller
     {
         $casts = Cast::find($id);
 
-        if($casts){
+        if(!$casts){
             return response()->json([
                 "message" => 'id tidak ditemukan'  
             ], '404'); 
         }
-        $casts->name = $request['name'];
+        $casts->update($request->all());
+        // $casts->name = $request['name'];
+        // $casts->age = $request['age'];
+        // $casts->bio = $request['bio'];
 
-        $casts->save();
+        // $casts->save();
         return response()->json([
             'message' => "Data cast berhasil di update dengan id : $id",
             // 'data' => $validated
@@ -82,7 +85,7 @@ class CastController extends Controller
     {
         $casts = Cast::find($id);
 
-        if($casts){
+        if(!$casts){
             return response()->json([
                 "message" => 'id tidak ditemukan'  
             ], '404'); 

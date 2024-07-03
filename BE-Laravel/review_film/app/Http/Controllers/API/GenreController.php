@@ -43,7 +43,7 @@ class GenreController extends Controller
     {
         $genres = Genre::find($id);
 
-        if($genres){
+        if(!$genres){
             return response()->json([
                 "message" => 'id tidak ditemukan'  
             ], 404); 
@@ -61,14 +61,14 @@ class GenreController extends Controller
     {
         $genres = Genre::find($id);
 
-        if($genres){
+        if(!$genres){
             return response()->json([
                 "message" => 'id tidak ditemukan'  
             ], '404'); 
         }
-        $genres->name = $request['name'];
+        $genres->update($request->all());
 
-        $genres->save();
+        // $genres->save();
         return response()->json([
             'message' => "Data genre berhasil di update dengan id : $id",
             // 'data' => $validated
@@ -82,7 +82,7 @@ class GenreController extends Controller
     {
         $genres = Genre::find($id);
 
-        if($genres){
+        if(!$genres){
             return response()->json([
                 "message" => 'id tidak ditemukan'  
             ], '404'); 

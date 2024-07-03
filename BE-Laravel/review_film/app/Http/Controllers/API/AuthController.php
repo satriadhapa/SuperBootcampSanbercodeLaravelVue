@@ -15,13 +15,13 @@ class AuthController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['login']]);
+        // $this->middleware('auth:api', ['except' => ['login']]);
     }
     public function register(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
+            'email' => 'required|string|email|max:255|unique:users,email',
             'password' => 'required|string|min:6|confirmed',
         ]);
 
@@ -34,7 +34,7 @@ class AuthController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'role_id' => $roleUser
+            'role_id' => $roleUser->id
         ]);
 
         $token = JWTAuth::fromUser($user);
@@ -58,17 +58,37 @@ class AuthController extends Controller
     {
         $credentials = request(['email', 'password']);
 
-        if (! $user = auth()->attempt($credentials)) {
+        if (!$token = auth()->attempt($credentials)) {
             return response()->json([
                 'message' => 'user invalid'], 401);
         }
-        $userData = User::where('email', $request['email'])->first();
-        $token = JWTAuth::fromUser($userData);
+        $Userdata = User::where('email', $request['email'])->first();
+        $token = JWTAuth::fromUser($Userdata);
         return response()->json([
-            'user' => $userData,
+            'user' => $Userdata,
             'token' => $token
         ]);
+    
+    }
+    public function updateUser(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:255'
+        ]);
 
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 422);
+        }
+        $currentUser = auth()->user();
+        $userid =User::find($currentUser->id);
+        $userid ->name = $request['name'];
+        $userid->save([
+            "name" => $request['name']
+        ]);
+
+        return response()->json([
+            "message" => "berhasil"
+        ]);
     }
     public function logout()
     {
@@ -76,4 +96,6 @@ class AuthController extends Controller
 
         return response()->json(['message' => 'Successfully logged out']);
     }
+
+
 }

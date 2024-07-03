@@ -30,7 +30,9 @@ class CastMovieRequest extends FormRequest
     public function messages()
     {
         return [
-            'name.required' => "nama cast tidak boleh kosong"
+            'name.required' => "nama cast tidak boleh kosong",
+            'cast_id.required' => "cast id tidak boleh kosong",
+            'movie_id.required' => "movie id cast tidak boleh kosong"
         ];
     }
 }

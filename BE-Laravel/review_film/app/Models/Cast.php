@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 class Cast extends Model
 {
     use HasFactory, HasUuids;
-    protected $table = 'casts';
+    protected $table = 'cast';
     protected $fillable = [
         'name',
         'age',
