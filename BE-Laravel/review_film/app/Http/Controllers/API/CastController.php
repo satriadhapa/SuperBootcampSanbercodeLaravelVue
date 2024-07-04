@@ -9,6 +9,11 @@ use App\Models\Cast;
 
 class CastController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware(['auth:api', 'isAdmin'])->only('index');
+    }
     /**
      * Display a listing of the resource.
      */
