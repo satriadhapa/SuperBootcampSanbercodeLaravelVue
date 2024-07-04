@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Models\OtpCode;
 use App\Models\Roles;
 use Illuminate\Http\Request;
 use Tymon\JWTAuth\Facades\JWTAuth;
@@ -10,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use App\Models\User;
+use Carbon\Carbon;
 
 class AuthController extends Controller
 {
@@ -17,6 +19,8 @@ class AuthController extends Controller
     {
         // $this->middleware('auth:api', ['except' => ['login']]);
     }
+
+    
     public function register(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -37,6 +41,8 @@ class AuthController extends Controller
             'role_id' => $roleUser->id
         ]);
 
+        $user -> generateOtpCode();
+
         $token = JWTAuth::fromUser($user);
 
         return response()->json([
@@ -52,6 +58,52 @@ class AuthController extends Controller
         return response()->json([
             'message' => 'Berhasil get user',
             'user' => $currentUser
+        ]);
+    }
+
+    public function generateOtpCode(Request $request)
+    {
+        $request ->validate([
+            'email' => 'required|email'
+        ]);
+        $userData = User::where('email', $request->email)->first();
+        $userData->generateOtpCode();
+        return response()->json([
+            "message" => "berhasil generate ulang otp code",
+            "data" => $userData
+        ]);
+    }
+    public function verifikasi(Request $request)
+    {
+        $request->validate([
+            'otp'=> 'required'
+        ]);
+        # mengecek otp code di DB
+        $otp_code = OtpCode::where('otp', $request->otp)->first();
+        if(!$otp_code)
+        {
+            return response()->json([
+                'message' => "otp code tidak ditemukan"
+            ],404);
+        }
+        $now = Carbon::now();
+        if($now > $otp_code->valid_until)
+        {
+            return response()->json([
+                "message" => "otp sudah kadaluarsa, silahkan generate ulang",
+
+            ],404);
+        }
+        // update user
+        $user = User::find($otp_code->user_id);
+        $user->email_verified_at =$now;
+
+        $user->save();
+
+        $otp_code->delete();
+
+        return response()->json([
+            "message" => "berhasil verifikasi akun",
         ]);
     }
     public function login(Request $request)
