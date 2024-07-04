@@ -38,7 +38,7 @@ class User extends Authenticatable Implements JWTSubject
     {
         return [];
     }
-    public function generateOtpCode($user)
+    public function generateOtpCode()
     {
 
         do {
@@ -46,9 +46,9 @@ class User extends Authenticatable Implements JWTSubject
             $checkOtpCode = OtpCode::where('otp', $randomNumber)->first();
         } while ($checkOtpCode);
         $now = Carbon::now();
-        $currentUser = auth()->user();
+        // $currentUser = auth()->user();
         $otp_code = OtpCode::updateOrCreate(
-            ["user_id"=> $currentUser->id],
+            ["user_id"=> $this->id],
             [
                 'otp'=> $randomNumber,
                 'valid_until'=> $now-> addMinute(5)
@@ -57,7 +57,7 @@ class User extends Authenticatable Implements JWTSubject
         return response()->json([
             "data" => "Otp code sudah di generate"
         ]);
-    }
+    }   
     /**
      * The attributes that are mass assignable.
      *
