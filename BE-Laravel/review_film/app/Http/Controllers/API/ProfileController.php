@@ -16,8 +16,12 @@ class ProfileController extends Controller
     public function index()
     {
         $currentUser = auth()->user();
-        profil::with()-> find($currentUser->id;
-        )
+        $profile = profil::with('user')-> find($currentUser->id);
+
+        return response()->json([
+            'message' => "tampil data profil",
+            'data' => $profile
+        ],200);
     }
 
     /**
@@ -47,7 +51,7 @@ class ProfileController extends Controller
             ]   
         );
         return response()->json([
-            'message' => "tampil profil",
+            'message' => "tamabah dan update profil",
             'data' => $profileData
         ]);
     }
