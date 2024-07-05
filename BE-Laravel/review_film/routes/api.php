@@ -44,4 +44,5 @@ Route::prefix('v1')->group(function () {
     Route::get('/me', [AuthController::class, 'getUser'])->middleware('auth:api', 'isVerificationAccount');
     Route::post('profile', [ProfileController::class, 'store'])->middleware('auth:api', 'isVerificationAccount');
     Route::post('get-profile', [ProfileController::class, 'index'])->middleware('auth:api', 'isVerificationAccount');
+    Route::post('get-review', [ProfileController::class, 'index'])->middleware('auth:api', 'isVerificationAccount');
     });
