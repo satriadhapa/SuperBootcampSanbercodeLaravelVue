@@ -10,6 +10,8 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Symfony\Component\HttpKernel\Profiler\Profile;
+use App\Models\Profil;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
 class User extends Authenticatable Implements JWTSubject
@@ -85,4 +87,9 @@ class User extends Authenticatable Implements JWTSubject
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function profile()
+    {
+        return $this->hasOne(Profil::class, 'user_id');
+    }
 }

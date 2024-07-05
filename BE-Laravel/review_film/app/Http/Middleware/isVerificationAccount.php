@@ -16,7 +16,7 @@ class isVerificationAccount
     public function handle(Request $request, Closure $next): Response
     {
         $user = auth()->user();
-        if($user->email_verified_ad != null){
+        if($user->email_verified_at != null){
 
             return $next($request);
         }

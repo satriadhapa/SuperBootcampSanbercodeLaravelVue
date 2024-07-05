@@ -7,6 +7,7 @@ use App\Http\Controllers\API\MovieController;
 use App\Http\Controllers\API\GenreController;
 use App\Http\Controllers\API\CastController;
 use App\Http\Controllers\API\CastMovieController;
+use App\Http\Controllers\API\ProfileController;
 use App\Http\Requests\MovieRequest;
 /*
 |--------------------------------------------------------------------------
@@ -38,6 +39,6 @@ Route::prefix('v1')->group(function () {
         Route::post('verifikasi-akun', [AuthController::class, 'verifikasi']);
     });
     Route::post('/update-user', [AuthController::class, 'updateUser'])->middleware('auth:api');
-    Route::get('/me', [AuthController::class, 'getUser'])->middleware('auth:api');
-    
+    Route::get('/me', [AuthController::class, 'getUser'])->middleware('auth:api', 'isVerificationAccount');
+    Route::post('profile', [ProfileController::class, 'store'])->middleware('auth:api', 'isVerificationAccount');
     });
