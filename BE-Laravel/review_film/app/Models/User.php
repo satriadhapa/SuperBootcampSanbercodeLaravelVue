@@ -92,4 +92,8 @@ class User extends Authenticatable Implements JWTSubject
     {
         return $this->hasOne(Profil::class, 'user_id');
     }
+    public function otpcode()
+    {
+        return $this->hasOne(OtpCode::class, 'user_id');
+    }
 }
