@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Roles;
 use App\Models\User;
 use Closure;
 use Illuminate\Http\Request;
@@ -17,9 +18,9 @@ class isAdmin
     public function handle(Request $request, Closure $next): Response
     {
         $user = auth()->user();
-        $userAdmin = User::where('nama', 'admin')->first();
+        $userAdmin = Roles::where('nama', 'admin')->first();
         
-        if($user && $user->id === $userAdmin-> id){
+        if($user && $user->role_id === $userAdmin-> id){
 
             return $next($request);
         }

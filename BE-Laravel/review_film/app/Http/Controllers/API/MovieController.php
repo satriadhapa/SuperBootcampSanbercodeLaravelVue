@@ -11,6 +11,10 @@ use Illuminate\Support\Facades\Storage;
 
 class MovieController extends Controller
 {
+    public function __construct()
+    {
+        $this -> middleware(['auth:api', 'admin']) -> only('store', 'update', 'delete');
+    }
     public function index()
     {
         $movie = Movie::all();
@@ -50,7 +54,7 @@ class MovieController extends Controller
     }
     public function show(string $id)
     {
-        $movie = Movie::find($id);
+        $movie = Movie::with('movie')-> find($id);
         if(!$movie){
             return response()->json([
                 'message'=>"movie id tidak ditemukan"

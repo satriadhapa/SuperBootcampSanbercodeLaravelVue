@@ -13,4 +13,9 @@ class Movie extends Model
     protected $fillable = ['title','summary','poster','year','genre_id'];
 
     public $timestamps = false;
+
+    public function review()
+    {
+        $this->hasMany(Review::class, 'movie_id');
+    }
 }

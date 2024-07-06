@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Models\Movie;
 use App\Models\Review;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -15,7 +16,12 @@ class ReviewController extends Controller
      */
     public function index()
     {
-        return Review::all();
+        // $currentUser = auth()->user();
+        // $reviewData = Review::findOrFail($currentUser->id);
+        // return response()->json([
+        //     'message' => 'tampil data review',
+        //     'data' => $reviewData
+        // ]);
     }
 
     /**
@@ -26,7 +32,7 @@ class ReviewController extends Controller
         $validator = Validator::make($request->all(), [
             'critic' => 'required|string',
             'rating' => 'required|integer',
-            'movie_id' => 'required'
+            'movie_id' => 'required|exists:movie_id'
         ]);
 
         if ($validator->fails()) {
@@ -36,12 +42,12 @@ class ReviewController extends Controller
 
         $user = User::find($currentUser->id);
         $reviewData = Review::updateOrCreate(
-            // ['user_id'=> $currentUser ->id],
-            ['user_id' => $currentUser->id, 'movie_id' => $request->movie_id],
+            ['user_id'=> $currentUser ->id],
+            ['movie_id' => $request['movie_id']],
             ['critic' => $request->critic, 'rating' => $request->rating]   
         );
         return response()->json([
-            'message' => "tamabah dan update profil",
+            'message' => "tambah dan update review",
             'data' => $reviewData
         ]);
     }
@@ -51,11 +57,17 @@ class ReviewController extends Controller
      */
     public function show(string $id)
     {
-        $reviewData = Review::findOrFail($id);
-        return response()->json([
-            'message' => 'tampil data review',
-            'data' => $reviewData
-        ]);
+        // $reviewData = Movie::with('review')->find($id);
+        // if(!$reviewData){
+        //     return response()->json([
+        //         'message' => 'id tidak ditemukan'
+        //     ]);
+
+        // }
+        // return response()->json([
+        //     'message' > "data dengan id : $id",
+        //     'data' => $reviewData
+        // ]);
     }
 
     /**
