@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/style_form.css">
+    <title>Register Akun Baru!</title>
+</head>
+<body>
+    <header>
+        <img src="./img/logo.png" alt="Sanbercode Logo">
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="form.html">Register</a></li>
+                <li><a href="article.html">Article</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <h1>Register Akun Baru!</h1>
+        <p>Isilah form dibawah ini</p>
+        <form action="process.html" method="POST">
+            <label for="first-name">First Name:</label><br>
+            <input type="text" id="first-name" name="first-name"><br><br>
+            
+            <label for="last-name">Last Name:</label><br>
+            <input type="text" id="last-name" name="last-name"><br><br>
+            
+            <label>Gender:</label><br>
+            <input type="radio" id="male" name="gender" value="male">
+            <label for="male">Male</label><br>
+            <input type="radio" id="female" name="gender" value="female">
+            <label for="female">Female</label><br>
+            <input type="radio" id="other" name="gender" value="other">
+            <label for="other">Other</label><br><br>
+            
+            <label for="nationality">Nationality:</label><br>
+            <select id="nationality" name="nationality">
+                <option value="Indonesia">Indonesia</option>
+                    <option value="Amerika Serikat">Amerika Serikat</option>
+                    <option value="Jepang">Jepang</option>
+                    <option value="Korea Selatan">Korea Selatan</option>
+                    <option value="Korea Utara">Korea Utara</option>
+            </select><br><br>
+            
+            <label for="study-focus">Sedang Fokus Belajar:</label><br>
+            <select id="study-focus" name="study-focus">
+                <option value="React">React</option>
+                <option value="Laravel">Laravel</option>
+                <option value="HTML & CSS">HTML & CSS</option>
+                <option value="python">Python</option>
+                <option value="php">Php</option>
+            </select><br><br>
+            
+            <label>Language Spoken:</label><br>
+            <input type="checkbox" id="lang-indonesia" name="language" value="Indonesia">
+            <label for="lang-male">Indonesia</label><br>
+            <input type="checkbox" id="lang-english" name="language" value="English">
+            <label for="lang-female">English</label><br>
+            <input type="checkbox" id="lang-other" name="language" value="other">
+            <label for="lang-other">Other</label><br><br>
+            
+            <label for="description">Deskripsi Diri Saya:</label><br>
+            <textarea id="description" name="description"></textarea><br><br>
+            
+            <button type="submit">Register</button>
+        </form>
+
+    </main>
+
+    <footer>
+        <p>copyright © 2024 by Sanbercode</p>
+    </footer>
+</body>
+</html>
