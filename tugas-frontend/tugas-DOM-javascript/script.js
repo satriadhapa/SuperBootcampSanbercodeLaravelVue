@@ -28,6 +28,14 @@ document.addEventListener('DOMContentLoaded', function() {
             listBarang.insertAdjacentHTML('beforeend', productCard);
         });
     }
+    // ambil product berdasarkan pencarian di form search
+    document.getElementById('formItem').addEventListener('submit', function(event) {
+        event.preventDefault();
+        const keyword = document.getElementById('keyword').value.toLowerCase();
+        const filteredItems = items.filter(item => item[1].toLowerCase().includes(keyword));
+        displayProducts(filteredItems);
+    });
+
     // memanggil fungsi untuk menampilkan produk
     displayProducts(items);
 });
