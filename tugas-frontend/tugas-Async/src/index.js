@@ -10,3 +10,11 @@ if (command === 'register') {
     else console.log(message);
   });
 }
+
+const login = require('./libs/login');
+
+if (command === 'login') {
+  login(name, password)
+    .then(message => console.log(message))
+    .catch(err => console.error(err));
+}
