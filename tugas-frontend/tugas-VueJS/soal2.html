@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Formulir Username dan Password</title>
+    <title>form VueJS</title>
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <script type="importmap">
         {
@@ -12,87 +12,25 @@
             }
           }
     </script>
-    <style>
-        /* kode untuk styling*/
-
-        body{
-            background-color: blanchedalmond;
-            display: flex;
-            font-family: Verdana, Geneva, Tahoma, sans-serif;
-            margin-left: 30px;
-            text-align: center;
-            align-items: center;
-
-        }
-        #app{
-            text-align: center;
-        }
-        input {
-            border: 1px solid #ccc;
-            border-radius: 3px;
-            box-sizing: border-box;
-        }
-        button {
-            cursor: pointer;
-            border-radius: 1px;
-        }
-        .error {
-            color: #e74c3c;
-            font-size: 0.9em;
-        }
-    </style>
 </head>
 <body>
     <div id="app">
-        <h2>Form Login</h2>
-        <form @submit.prevent="handleSubmit">
-          <label for="username">Username:</label>
-          <input type="text" id="username" v-model="username" minlength="6" maxlength="12" required>
-          <span v-if="usernameErrors.length > 0" class="error">{{ usernameErrors[0] }}</span>
-          <br><br>
-
-          <label for="password">Password:</label>
-          <input type="password" id="password" v-model="password" minlength="8" maxlength="16" required>
-          <span v-if="passwordErrors.length > 0" class="error">{{ passwordErrors[0] }}</span>
-          <br><br>
-          <button type="submit">Submit</button>
-        </form>
-    
-        <div v-if="showOutput">
-          <h2>Hasil Output</h2>
-          <p>Username: {{ username }}</p>
-          <p>Password: {{ password }}</p>
-        </div>
+        <ul>
+          <li v-for="(item, index) in people" :key="index">
+            {{ index }}. {{ item.nama }}: {{ item.age }} .{{item.address}}
+          </li>
+        </ul>
       </div>
-    
       <script src="https://unpkg.com/vue@next"></script>
       <script>
         let vm = Vue.createApp({
           data() {
             return {
-              username: '',
-              password: '',
-              usernameErrors: [],
-              passwordErrors: [],
-              showOutput: false
-            }
-          },
-          methods: {
-            handleSubmit() {
-              this.usernameErrors = [];
-              this.passwordErrors = [];
-    
-              if (this.username.length < 6 || this.username.length > 12) {
-                this.usernameErrors.push('Username harus 6-12 karakter');
-              }
-    
-              if (this.password.length < 8 || this.password.length > 16) {
-                this.passwordErrors.push('Password harus 8-16 karakter');
-              }
-    
-              if (this.usernameErrors.length === 0 && this.passwordErrors.length === 0) {
-                this.showOutput = true;
-              }
+              people: [
+                { nama: 'satria', age: 20, address: "jawa" },
+                { nama: 'jojon', age: 15, address: "bali" },
+                { nama: 'lucinta', age: 22, address: "yogyakarta" }
+              ]
             }
           }
         }).mount('#app');
