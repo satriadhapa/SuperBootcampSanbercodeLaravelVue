@@ -18,3 +18,13 @@ if (command === 'login') {
     .then(message => console.log(message))
     .catch(err => console.error(err));
 }
+
+const addSiswa = require('./libs/addSiswa');
+
+if (command === 'addSiswa') {
+  const [studentName, trainerName] = args[1].split(',');
+
+  addSiswa(studentName, trainerName)
+    .then(message => console.log(message))
+    .catch(err => console.error(err));
+}
