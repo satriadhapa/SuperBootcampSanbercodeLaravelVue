@@ -34,7 +34,7 @@ import { RouterLink } from 'vue-router';
   text-decoration: none;
   color: white;
   font-weight: bold;
-  margin-right: 1rem; /* Add margin to the right of each link */
+  margin-right: 1rem;
   transition: color 0.3s ease-in-out;
 }
 
@@ -52,11 +52,11 @@ import { RouterLink } from 'vue-router';
 }
 
 .nav-link:hover {
-  color: yellow;
+  color: rgb(255, 255, 152);
 }
 
 .nav-link:hover::after {
   transform: scaleX(1);
-  transform-origin: left;
+  transform-origin: left
 }
 </style>
