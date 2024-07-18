@@ -1,6 +1,6 @@
 <template>
   <header class="flex justify-between items-center p-4 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white shadow-lg">
-    <img alt="Vue logo" class="logo" src="@/assets/log.png" />
+    <a href="/"><img alt="logo" class="logo" src="@/assets/log.png" /></a>
 
     <div class="flex items-center">
       <nav class="flex space-x-6">
@@ -19,6 +19,24 @@ import { RouterLink } from 'vue-router';
 </script>
 
 <style scoped>
+
+.container {
+  max-width: 100%;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+@media (min-width: 768px) {
+  .container {
+    max-width: 75%;
+  }
+}
+
+@media (min-width: 1024px) {
+  .container {
+    max-width: 50%;
+  }
+}
 .logo {
   width: 55px;
   height: 55px;

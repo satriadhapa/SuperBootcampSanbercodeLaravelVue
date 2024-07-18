@@ -1,6 +1,7 @@
 <template>
   <div class="container mx-auto p-6 animate__animated animate__fadeIn">
-    <h1 class="text-4xl font-bold mb-6 text-gray-800 text-center">Contact Me</h1>
+    <h1 class="text-4xl text-center"> Let's Connect With</h1>
+    <h1 class="text-4xl font-bold mb-6 text-gray-800 text-center">Me</h1>
     
     <form class="max-w-lg mx-auto bg-white p-6 rounded-lg shadow-lg">
       <div class="mb-4">

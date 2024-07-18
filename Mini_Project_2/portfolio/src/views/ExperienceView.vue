@@ -70,6 +70,8 @@
   
   <style scoped>
   @import 'animate.css';
+
+  
   hr{
     border: 2px solid rgb(92, 92, 92);
     border-radius: 5px;

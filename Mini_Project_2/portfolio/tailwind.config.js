@@ -4,7 +4,9 @@ export default {
   theme: {
     extend: {},
   },
-  plugins: [],
+  plugins: [
+    require('daisyui'),
+  ],
 }
 
 module.exports = {
@@ -12,6 +14,9 @@ module.exports = {
   darkMode: false, // or 'media' or 'class'
   theme: {
     extend: {},
+  },
+  daisyui: {
+    themes: ["light", "dark", "cupcake"],
   },
   variants: {
     extend: {},
