@@ -89,7 +89,7 @@
     transform: translateX(-50%);
     width: 2px;
     height: 100%;
-    background: #808080; /* Light gray color */
+    background: #808080;
   }
   
   .timeline-item {
