@@ -1,24 +1,23 @@
 <template>
-  <header class="flex justify-between items-center p-4 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white shadow-lg">
+  <header class="flex justify-between items-center p-4 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white shadow-lg z-50 relative">
     <a href="/"><img alt="logo" class="logo" src="@/assets/log.png" /></a>
 
     <button @click="toggleMenu" class="md:hidden text-white">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-        </svg>
-      </button>
-      
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+      </svg>
+    </button>
+
     <div class="flex items-center">
-      <nav :class="['md:flex', showMenu ? 'block' : 'hidden']" class="absolute md:relative md:flex md:items-center bg-gray-800 md:bg-transparent w-full md:w-auto top-16 md:top-auto left-0 md:left-auto p-4 md:p-0">
-        <RouterLink to="/" class="block md:inline-block hover:underline p-2 md:px-4">Home</RouterLink>
-        <RouterLink to="/about" class="block md:inline-block hover:underline p-2 md:px-4">About</RouterLink>
-        <RouterLink to="/portfolio" class="block md:inline-block hover:underline p-2 md:px-4">Portfolio</RouterLink>
-        <RouterLink to="/experience" class="block md:inline-block hover:underline p-2 md:px-4">Experience</RouterLink>
-        <RouterLink to="/contact" class="block md:inline-block hover:underline p-2 md:px-4">Contact</RouterLink>
+      <nav :class="['md:flex', showMenu ? 'block' : 'hidden']" class="absolute md:relative md:flex md:items-center bg-gray-800 md:bg-transparent w-full md:w-auto top-16 md:top-auto left-0 md:left-auto p-4 md:p-0 z-40">
+        <RouterLink to="/" class="block md:inline-block hover:underline p-2 md:px-4 nav-link" @click="hideMenu">Home</RouterLink>
+        <RouterLink to="/about" class="block md:inline-block hover:underline p-2 md:px-4 nav-link" @click="hideMenu">About</RouterLink>
+        <RouterLink to="/portfolio" class="block md:inline-block hover:underline p-2 md:px-4 nav-link" @click="hideMenu">Portfolio</RouterLink>
+        <RouterLink to="/experience" class="block md:inline-block hover:underline p-2 md:px-4 nav-link" @click="hideMenu">Experience</RouterLink>
+        <RouterLink to="/contact" class="block md:inline-block hover:underline p-2 md:px-4 nav-link" @click="hideMenu">Contact</RouterLink>
       </nav>
     </div>
   </header>
-  
 </template>
 
 <script setup>
@@ -30,10 +29,13 @@ const showMenu = ref(false);
 const toggleMenu = () => {
   showMenu.value = !showMenu.value;
 };
+
+const hideMenu = () => {
+  showMenu.value = false;
+};
 </script>
 
 <style scoped>
-
 .container {
   max-width: 100%;
   padding-left: 1rem;
@@ -51,6 +53,7 @@ const toggleMenu = () => {
     max-width: 50%;
   }
 }
+
 .logo {
   width: 55px;
   height: 55px;

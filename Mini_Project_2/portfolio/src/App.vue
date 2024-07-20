@@ -1,8 +1,9 @@
 <template>
   <div id="app">
-    <Header /><br><br><br><br><br><br><br><br>
-    <transition name="fade" mode="out-in"></transition>
-    <router-view />
+    <Header />
+    <transition name="fade" mode="out-in">
+      <router-view />
+    </transition>
     <Footer />
   </div>
 </template>
@@ -18,7 +19,7 @@ import Footer from './components/footer.vue';
   transition: opacity 0.9s ease;
 }
 
-.fade-enter, .fade-leave-to /* .fade-leave-active in <2.1.8 */ {
+.fade-enter, .fade-leave-to {
   opacity: 0;
 }
 </style>
