@@ -2,13 +2,19 @@
   <header class="flex justify-between items-center p-4 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white shadow-lg">
     <a href="/"><img alt="logo" class="logo" src="@/assets/log.png" /></a>
 
+    <button @click="toggleMenu" class="md:hidden text-white">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      </button>
+      
     <div class="flex items-center">
-      <nav class="flex space-x-6">
-        <RouterLink to="/" class="nav-link">Home</RouterLink>
-        <RouterLink to="/about" class="nav-link">About</RouterLink>
-        <RouterLink to="/portfolio" class="nav-link">Portfolio</RouterLink>
-        <RouterLink to="/experience" class="nav-link">Experience</RouterLink>
-        <RouterLink to="/contact" class="nav-link">Contact</RouterLink>
+      <nav :class="['md:flex', showMenu ? 'block' : 'hidden']" class="absolute md:relative md:flex md:items-center bg-gray-800 md:bg-transparent w-full md:w-auto top-16 md:top-auto left-0 md:left-auto p-4 md:p-0">
+        <RouterLink to="/" class="block md:inline-block hover:underline p-2 md:px-4">Home</RouterLink>
+        <RouterLink to="/about" class="block md:inline-block hover:underline p-2 md:px-4">About</RouterLink>
+        <RouterLink to="/portfolio" class="block md:inline-block hover:underline p-2 md:px-4">Portfolio</RouterLink>
+        <RouterLink to="/experience" class="block md:inline-block hover:underline p-2 md:px-4">Experience</RouterLink>
+        <RouterLink to="/contact" class="block md:inline-block hover:underline p-2 md:px-4">Contact</RouterLink>
       </nav>
     </div>
   </header>
@@ -17,6 +23,13 @@
 
 <script setup>
 import { RouterLink } from 'vue-router';
+import { ref } from 'vue';
+
+const showMenu = ref(false);
+
+const toggleMenu = () => {
+  showMenu.value = !showMenu.value;
+};
 </script>
 
 <style scoped>

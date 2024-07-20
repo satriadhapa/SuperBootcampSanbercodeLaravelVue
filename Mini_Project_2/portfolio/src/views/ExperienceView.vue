@@ -13,6 +13,9 @@
             <h2 class="text-xl font-bold mb-1">{{ item.position }}</h2>
             <p class="text-gray-600 mb-4">{{ item.company }} ({{ item.duration }})</p>
             <p class="text-gray-500">{{ item.description }}</p>
+            <p class="text-gray-500">{{ item.description2 }}</p>
+            <p class="text-gray-500">{{ item.description3 }}</p>
+            <p class="text-gray-500">{{ item.description4 }}</p>
           </div>
         </div>
       </div>
@@ -41,18 +44,29 @@
   
   const experienceItems = ref([
     {
-      position: 'Data Scientist Intern',
-      company: 'Yayasan Achmad Zaky',
-      duration: '6 months',
-      description: 'Worked on data analysis and visualization projects, improving data processing workflows.',
+      position: 'Teknik Informatika',
+      company: 'Universitas Muhammadiyah Sukabumi',
+      duration: 'September 2020 - Februari 2024',
+      description: 'IPK : 3.71',
     },
     {
       position: 'Data Scientist Intern',
       company: 'Yayasan Achmad Zaky',
-      duration: '6 months',
-      description: 'Worked on data analysis and visualization projects, improving data processing workflows.',
+      duration: 'Agustus 2022 - Desember 2022',
+      description: "•	pengolahan data sebanyak 15000+",
+      description2: "•	Berhasil Mengerjakan proyek akhir model customer churn dengan akurasi 85%",
+      description3: "•	Melakukan A/B test untuk menguji performa dari beberapa algoritma seperti logistic regression dan Random Forest",
+      description4: "•	Melakukan Scraping Data sebanyak lebih dari 10000 dengan menggunakan python dan google colab"
     },
-    // Add more experience items here
+    {
+      position: 'BackEnd Engineer Laravel',
+      company: 'PPK ORMAWA Desa Nagrak Selatan, Kab. Sukabumi',
+      duration: 'Agustus 2022 - Januari 2023',
+      description: "•	management route untuk setiap fitur pada website nagrak selatan sebanyak lebih dari 5 fitur",
+      description2: "•	membuat 5 desain fitur pada database mysql",
+      description3: "•	melakukan survei pada 5 tempat UMKM di nagrak selatan",
+    },
+    
   ]);
   
   const certificationItems = ref([
