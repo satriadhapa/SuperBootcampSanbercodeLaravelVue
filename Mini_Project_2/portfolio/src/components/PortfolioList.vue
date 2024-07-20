@@ -17,6 +17,7 @@ import project1 from '@/assets/datascience.jpg';
 import project2 from '@/assets/data analis project.png';
 import project3 from '@/assets/postman.png';
 import project4 from '@/assets/Customer Churn Prediction.png';
+import project5 from '@/assets/project sistem.png';
 
 const portfolioItems = ref([
   { 
@@ -42,6 +43,12 @@ const portfolioItems = ref([
     description: 'This machine learning model is the result of practical work carried out at the Achmad Zaky Foundation. This machine learning model aims to predict customer churn based on the length of time they shop and how much customers spend on a particular item', 
     link: 'https://github.com/satriadhapa/Model-Machine-Learning/blob/master/Project%20KP.ipynb',
     image: project4
+  },
+  { 
+    name: 'Sistem Penjadwalan Dosen', 
+    description: 'Sistem Jadwal Dosen algoritma Genetika dengan FrameWork Flask Python (ON PROGRESS)', 
+    link: 'https://github.com/satriadhapa/Sistem_Jadwal_Dosen',
+    image: project5
   },
 ]);
 </script>
