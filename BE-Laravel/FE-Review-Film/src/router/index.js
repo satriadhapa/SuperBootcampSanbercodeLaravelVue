@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import Home from '@/views/Home.vue';
+import Home from '@/views/HomePage.vue';
 import Login from '@/views/Login.vue';
 import Register from '@/views/Register.vue';
 import VerifyAccount from '@/views/VerifyAccount.vue';
@@ -8,7 +8,7 @@ import Genre from '@/views/Genre.vue';
 // import Cast from './views/Cast.vue';
 
 const routes = [
-  { path: '/', name: 'Home', component: Home },
+  { path: '/', name: 'HomePage', component: Home },
   { path: '/login', component: Login },
   { path: '/register', name: 'Register', component: Register },
   { path: '/verify-account', name: 'VerifyAccount', component: VerifyAccount },
