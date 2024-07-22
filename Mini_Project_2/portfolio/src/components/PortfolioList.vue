@@ -18,6 +18,7 @@ import project2 from '@/assets/data analis project.png';
 import project3 from '@/assets/postman.png';
 import project4 from '@/assets/Customer Churn Prediction.png';
 import project5 from '@/assets/project sistem.png';
+import project6 from '@/assets/reviewfilm.png';
 
 const portfolioItems = ref([
   { 
@@ -49,6 +50,12 @@ const portfolioItems = ref([
     description: 'Sistem Jadwal Dosen algoritma Genetika dengan FrameWork Flask Python (ON PROGRESS)', 
     link: 'https://github.com/satriadhapa/Sistem_Jadwal_Dosen',
     image: project5
+  },
+  { 
+    name: 'Projek Front End Website Review Film', 
+    description: 'Website review film, menggunakan VUEJS 3 (ON PROGRESS)', 
+    link: 'https://super-bootcamp-sanbercode-laravel-vue-st47.vercel.app/',
+    image: project6
   },
 ]);
 </script>
