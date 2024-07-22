@@ -4,7 +4,7 @@ import Login from '@/views/Login.vue';
 import Register from '@/views/Register.vue';
 import VerifyAccount from '@/views/VerifyAccount.vue';
 import Film from '@/views/Film.vue';
-// import Genre from './views/Genre.vue';
+import Genre from '@/views/Genre.vue';
 // import Cast from './views/Cast.vue';
 
 const routes = [
@@ -13,6 +13,7 @@ const routes = [
   { path: '/register', name: 'Register', component: Register },
   { path: '/verify-account', name: 'VerifyAccount', component: VerifyAccount },
   { path: '/film', name: 'Film', component: Film },
+  { path: '/genre', name: 'Genre', component: Genre },
   
 ];
 
@@ -28,5 +29,5 @@ export default router;
 //   { path: '/register', name: 'Register', component: Register },
 //   
 //   
-//   { path: '/genre', name: 'Genre', component: Genre },
+//   
 //   { path: '/cast', name: 'Cast', component: Cast }
