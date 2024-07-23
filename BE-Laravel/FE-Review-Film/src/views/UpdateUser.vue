@@ -1,4 +1,13 @@
 <template>
+   <nav class="bg-gradient-to-r from-gray-500 to-indigo-400 p-4 shadow-lg">
+    <div class="container mx-auto flex justify-between items-center">
+      <a href="/" class="flex items-center">
+        <img alt="logo" class="logo h-10 w-10 transform transition-transform duration-500 hover:scale-110" src="@/assets/log.png" />
+        <span class="text-white text-xl font-bold ml-2">Review Film</span>
+      </a>
+      </div>
+  </nav>
+    
     <div class="container mx-auto p-4">
       <h1 class="text-3xl font-bold mb-4 text-center">Update Profile</h1>
       <div class="bg-white p-6 rounded-lg shadow-md">

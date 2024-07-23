@@ -5,7 +5,7 @@ import Register from '@/views/Register.vue';
 import VerifyAccount from '@/views/VerifyAccount.vue';
 import Film from '@/views/Film.vue';
 import Genre from '@/views/Genre.vue';
-// import Cast from './views/Cast.vue';
+import Cast from '@/views/Cast.vue';
 import Profile from '@/views/Profile.vue';
 import UpdateUser from '@/views/UpdateUser.vue';
 
@@ -16,8 +16,9 @@ const routes = [
   { path: '/verify-account', component: VerifyAccount, meta: { hideNavbar: true } },
   { path: '/film', name: 'Film', component: Film },
   { path: '/genre', name: 'Genre', component: Genre },
+  { path: '/cast', component: Cast },
   { path: '/profile', component: Profile },
-  { path: '/update-user', component: UpdateUser },
+  { path: '/update-user', component: UpdateUser , meta: { hideNavbar: true }},
   
   
 ];
@@ -28,11 +29,3 @@ const router = createRouter({
 });
 
 export default router;
-
-
-// { path: '/login', name: 'Login', component: Login },
-//   { path: '/register', name: 'Register', component: Register },
-//   
-//   
-//   
-//   { path: '/cast', name: 'Cast', component: Cast }
