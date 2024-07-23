@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <Navbar />
+    <Navbar v-if="!$route.meta.hideNavbar" />
     <transition name="fade" mode="out-in">
       <router-view></router-view>
     </transition>
@@ -9,8 +9,11 @@
 </template>
 
 <script setup>
+import { useRoute } from 'vue-router';
 import Navbar from './components/navbar.vue';
 import Footer from './components/footer.vue';
+
+const route = useRoute();
 </script>
 
 <style>
