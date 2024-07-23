@@ -4,16 +4,17 @@
     <transition name="fade" mode="out-in">
       <router-view></router-view>
     </transition>
-    <Footer />
   </div>
 </template>
 
 <script setup>
+import { computed } from 'vue';
 import { useRoute } from 'vue-router';
 import Navbar from './components/navbar.vue';
 import Footer from './components/footer.vue';
 
 const route = useRoute();
+const showNavbar = computed(() => !route.meta.hideNavbar);
 </script>
 
 <style>
@@ -26,3 +27,4 @@ const route = useRoute();
   opacity: 0;
 }
 </style>
+

@@ -1,46 +1,43 @@
 <template>
-    <div class="min-h-screen flex items-center justify-center bg-gray-100 p-4">
-      <div class="bg-white p-8 rounded-lg shadow-lg max-w-sm w-full">
-        <h1 class="text-2xl font-bold mb-6 text-center">Verify Your Account</h1>
-        <form @submit.prevent="handleVerify">
-          <div class="mb-4">
-            <label for="verification-code" class="block text-sm font-medium text-gray-700 mb-1">Verification Code</label>
-            <input
-              id="verification-code"
-              v-model="verificationCode"
-              type="text"
-              placeholder="Enter your verification code"
-              class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              required
-            />
-          </div>
-          <button
-            type="submit"
-            class="w-full py-2 px-4 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          >
-            Verify
+  <div class="container mx-auto p-4">
+    <h1 class="text-3xl font-bold mb-4 text-center">Verifikasi Akun</h1>
+    <div class="bg-white p-6 rounded-lg shadow-md">
+      <form @submit.prevent="verifyAccount">
+        <div class="mb-4">
+          <label class="block text-gray-700 text-sm font-bold mb-2" for="otp">Kode OTP</label>
+          <input v-model="otp" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="otp" type="text" />
+        </div>
+        <div class="flex items-center justify-between">
+          <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">
+            Verifikasi
           </button>
-          <p class="mt-4 text-sm text-center">
-            Didn't receive a code? 
-            <a href="#" class="text-blue-500 hover:underline">Resend Code</a>
-          </p>
-        </form>
-      </div>
+        </div>
+      </form>
     </div>
-  </template>
-  
-  <script setup>
-  import { ref } from 'vue';
-  
-  const verificationCode = ref('');
-  
-  const handleVerify = () => {
-    // Handle verification logic here
-    console.log('Verification Code:', verificationCode.value);
-  };
-  </script>
-  
-  <style scoped>
-  /* Tambahkan styling tambahan sesuai kebutuhan */
-  </style>
-  
+  </div>
+</template>
+
+<script setup>
+import { ref } from 'vue';
+import { useStore } from 'vuex';
+import { useRouter } from 'vue-router';
+
+const otp = ref('');
+
+const store = useStore();
+const router = useRouter();
+
+const verifyAccount = async () => {
+  try {
+    await store.dispatch('verifyAccount', {
+      otp: otp.value,
+    });
+    router.push('/');
+  } catch (error) {
+    console.error('Verification failed', error);
+  }
+};
+</script>
+
+<style scoped>
+</style>

@@ -1,67 +1,46 @@
 <template>
-  <nav class="bg-gradient-to-r from-gray-500 to-indigo-400 p-4 shadow-lg">
-    <div class="container mx-auto flex justify-between items-center">
-      <a href="/" class="flex items-center">
-        <img alt="logo" class="logo h-10 w-10 transform transition-transform duration-500 hover:scale-110" src="@/assets/log.png" />
-        <span class="text-white text-xl font-bold ml-2">Review Film</span>
-      </a>
-      </div>
-  </nav>
-    <div class="min-h-screen flex items-center justify-center bg-gray-100 p-4">
-      <div class="bg-white p-8 rounded-lg shadow-lg max-w-sm w-full">
-        <h1 class="text-2xl font-bold mb-6 text-center">Login</h1>
-        <form @submit.prevent="handleLogin">
-          <div class="mb-4">
-            <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
-            <input
-              id="email"
-              v-model="email"
-              type="email"
-              placeholder="Enter your email"
-              class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              required
-            />
-          </div>
-          <div class="mb-6">
-            <label for="password" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
-            <input
-              id="password"
-              v-model="password"
-              type="password"
-              placeholder="Enter your password"
-              class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              required
-            />
-          </div>
-          <button
-            type="submit"
-            class="w-full py-2 px-4 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          >
+  <div class="container mx-auto p-4">
+    <h1 class="text-3xl font-bold mb-4 text-center">Login</h1>
+    <div class="bg-white p-6 rounded-lg shadow-md">
+      <form @submit.prevent="login">
+        <div class="mb-4">
+          <label class="block text-gray-700 text-sm font-bold mb-2" for="email">Email</label>
+          <input v-model="email" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="email" type="email" />
+        </div>
+        <div class="mb-4">
+          <label class="block text-gray-700 text-sm font-bold mb-2" for="password">Password</label>
+          <input v-model="password" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="password" type="password" />
+        </div>
+        <div class="flex items-center justify-between">
+          <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">
             Login
           </button>
-          <p class="mt-4 text-sm text-center">
-            Don't have an account? 
-            <router-link to="/register" class="text-blue-500 hover:underline">Register</router-link>
-          </p>
-        </form>
-      </div>
+        </div>
+      </form>
     </div>
-  </template>
-  
-  <script setup>
-  import { ref } from 'vue';
-  
-  const email = ref('');
-  const password = ref('');
-  
-  const handleLogin = () => {
-    // Handle login logic here
-    console.log('Email:', email.value);
-    console.log('Password:', password.value);
-  };
-  </script>
-  
-  <style scoped>
-  /* Tambahkan styling tambahan sesuai kebutuhan */
-  </style>
-  
+  </div>
+</template>
+
+<script setup>
+import { ref } from 'vue';
+import { useStore } from 'vuex';
+import { useRouter } from 'vue-router';
+
+const email = ref('');
+const password = ref('');
+
+const store = useStore();
+const router = useRouter();
+
+const login = async () => {
+  try {
+    await store.dispatch('login', { email: email.value, password: password.value });
+    router.push('/');
+  } catch (error) {
+    console.error('Login failed', error);
+  }
+};
+</script>
+
+<style scoped>
+</style>
