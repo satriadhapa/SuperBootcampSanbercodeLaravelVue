@@ -10,6 +10,8 @@
         <router-link to="/film" class="text-white text-lg hover:underline">Film</router-link>
         <router-link to="/genre" class="text-white text-lg hover:underline">Genre</router-link>
         <router-link to="/cast" class="text-white text-lg hover:underline">Cast</router-link>
+        <router-link to="/profile" class="text-white text-lg hover:underline">Profile</router-link>
+        <router-link to="/update-user" class="text-white text-lg hover:underline">Update User</router-link>
         <router-link to="/login" class="text-white text-lg hover:underline">Login</router-link>
         <router-link to="/register" class="text-white text-lg hover:underline">Register</router-link>
         <router-link to="/verify-account" class="text-white text-lg hover:underline">Verify Account</router-link>
