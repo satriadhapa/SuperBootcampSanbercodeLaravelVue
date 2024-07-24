@@ -7,15 +7,15 @@
       </a>
       <div class="hidden md:flex space-x-4 items-center">
         <router-link to="/" class="text-white text-lg hover:underline">Home</router-link>
-        <router-link v-if="isAuthenticated && isVerified" to="/film" class="text-white text-lg hover:underline">Film</router-link>
-        <router-link v-if="isAuthenticated && isVerified" to="/genre" class="text-white text-lg hover:underline">Genre</router-link>
-        <router-link v-if="isAuthenticated && isVerified" to="/cast" class="text-white text-lg hover:underline">Cast</router-link>
-        <router-link v-if="isAuthenticated && isVerified" to="/profile" class="text-white text-lg hover:underline">Profile</router-link>
-        <router-link v-if="isAuthenticated && isVerified" to="/update-user" class="text-white text-lg hover:underline">Update User</router-link>
-        <router-link v-if="!isAuthenticated" to="/login" class="text-white text-lg hover:underline">Login</router-link>
-        <router-link v-if="!isAuthenticated" to="/register" class="text-white text-lg hover:underline">Register</router-link>
-        <router-link v-if="isAuthenticated && !isVerified" to="/verify-account" class="text-white text-lg hover:underline">Verify Account</router-link>
-        <button v-if="isAuthenticated" @click="logout" class="text-white text-lg hover:underline">Logout</button>
+        <router-link to="/film" class="text-white text-lg hover:underline">Film</router-link>
+        <router-link to="/genre" class="text-white text-lg hover:underline">Genre</router-link>
+        <router-link to="/cast" class="text-white text-lg hover:underline">Cast</router-link>
+        <router-link to="/profile" v-if="isAuthenticated" class="text-white text-lg hover:underline">Profile</router-link>
+        <router-link to="/update-user" v-if="isAuthenticated" class="text-white text-lg hover:underline">Update User</router-link>
+        <router-link to="/login" v-if="!isAuthenticated" class="text-white text-lg hover:underline">Login</router-link>
+        <router-link to="/register" v-if="!isAuthenticated" class="text-white text-lg hover:underline">Register</router-link>
+        <router-link to="/verify-account" v-if="isRegistering" class="text-white text-lg hover:underline">Verify Account</router-link>
+        <button @click="logout" v-if="isAuthenticated" class="text-white text-lg hover:underline">Logout</button>
       </div>
       <div class="md:hidden">
         <button @click="isOpen = !isOpen" class="text-white focus:outline-none">
@@ -28,35 +28,31 @@
     </div>
     <div :class="{'block': isOpen, 'hidden': !isOpen}" class="md:hidden">
       <router-link to="/" class="block text-white text-lg hover:underline px-4 py-2">Home</router-link>
-      <router-link v-if="isAuthenticated && isVerified" to="/film" class="block text-white text-lg hover:underline px-4 py-2">Film</router-link>
-      <router-link v-if="isAuthenticated && isVerified" to="/genre" class="block text-white text-lg hover:underline px-4 py-2">Genre</router-link>
-      <router-link v-if="isAuthenticated && isVerified" to="/cast" class="block text-white text-lg hover:underline px-4 py-2">Cast</router-link>
-      <router-link v-if="isAuthenticated && isVerified" to="/profile" class="block text-white text-lg hover:underline px-4 py-2">Profile</router-link>
-      <router-link v-if="isAuthenticated && isVerified" to="/update-user" class="block text-white text-lg hover:underline px-4 py-2">Update User</router-link>
-      <router-link v-if="!isAuthenticated" to="/login" class="block text-white text-lg hover:underline px-4 py-2">Login</router-link>
-      <router-link v-if="!isAuthenticated" to="/register" class="block text-white text-lg hover:underline px-4 py-2">Register</router-link>
-      <router-link v-if="isAuthenticated && !isVerified" to="/verify-account" class="block text-white text-lg hover:underline px-4 py-2">Verify Account</router-link>
-      <button v-if="isAuthenticated" @click="logout" class="block text-white text-lg hover:underline px-4 py-2">Logout</button>
+      <router-link to="/film" class="block text-white text-lg hover:underline px-4 py-2">Film</router-link>
+      <router-link to="/genre" class="block text-white text-lg hover:underline px-4 py-2">Genre</router-link>
+      <router-link to="/cast" class="block text-white text-lg hover:underline px-4 py-2">Cast</router-link>
+      <router-link to="/profile" v-if="isAuthenticated" class="block text-white text-lg hover:underline px-4 py-2">Profile</router-link>
+      <router-link to="/update-user" v-if="isAuthenticated" class="block text-white text-lg hover:underline px-4 py-2">Update User</router-link>
+      <router-link to="/login" v-if="!isAuthenticated" class="block text-white text-lg hover:underline px-4 py-2">Login</router-link>
+      <router-link to="/register" v-if="!isAuthenticated" class="block text-white text-lg hover:underline px-4 py-2">Register</router-link>
+      <router-link to="/verify-account" v-if="isRegistering" class="block text-white text-lg hover:underline px-4 py-2">Verify Account</router-link>
+      <button @click="logout" v-if="isAuthenticated" class="block text-white text-lg hover:underline px-4 py-2">Logout</button>
     </div>
   </nav>
 </template>
 
 <script setup>
-import { computed, ref } from 'vue';
+import { ref, computed } from 'vue';
 import { useStore } from 'vuex';
-import { useRouter } from 'vue-router';
 
 const isOpen = ref(false);
 const store = useStore();
-const router = useRouter();
 
 const isAuthenticated = computed(() => store.getters.isAuthenticated);
-const user = computed(() => store.getters.user);
-const isVerified = computed(() => user.value.email_verified_at);
+const isRegistering = computed(() => store.getters.isRegistering);
 
 const logout = () => {
   store.dispatch('logout');
-  router.push('/login');
 };
 </script>
 
