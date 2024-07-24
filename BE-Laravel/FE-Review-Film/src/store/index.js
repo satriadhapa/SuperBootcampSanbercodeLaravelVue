@@ -1,10 +1,10 @@
 import { createStore } from 'vuex';
-import axios from '@/plugins/axios';
+import axios from '@/plugins/axios';  
 
 const store = createStore({
   state: {
     token: localStorage.getItem('token') || '',
-    user: {},
+    user: localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')) : {}, // Check if user exists in localStorage before parsing
   },
   mutations: {
     SET_TOKEN(state, token) {
@@ -25,6 +25,7 @@ const store = createStore({
       const user = response.data.user;
 
       localStorage.setItem('token', token);
+      localStorage.setItem('user', JSON.stringify(user)); // Store user in localStorage
       commit('SET_TOKEN', token);
       commit('SET_USER', user);
     },
@@ -34,16 +35,27 @@ const store = createStore({
       const user = response.data.user;
 
       localStorage.setItem('token', token);
+      localStorage.setItem('user', JSON.stringify(user)); // Store user in localStorage
       commit('SET_TOKEN', token);
       commit('SET_USER', user);
     },
     async verifyAccount({ commit }, otpData) {
       const response = await axios.post('/auth/verifikasi-akun', otpData);
-      // Here you may want to handle the response accordingly, e.g., updating the user status
-      // For example, you could refetch the user data if needed.
+      
+      const updatedUser = response.data.user; 
+      localStorage.setItem('user', JSON.stringify(updatedUser)); // Update user in localStorage
+      commit('SET_USER', updatedUser);
+    },
+    async fetchUser({ commit }) {
+      const response = await axios.get('/me');
+      const user = response.data.user;
+
+      localStorage.setItem('user', JSON.stringify(user)); // Store user in localStorage
+      commit('SET_USER', user);
     },
     logout({ commit }) {
       localStorage.removeItem('token');
+      localStorage.removeItem('user'); // Remove user from localStorage
       commit('LOGOUT');
     },
   },

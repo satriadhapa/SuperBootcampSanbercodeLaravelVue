@@ -1,17 +1,24 @@
 <template>
-  <div class="container mx-auto p-4">
-    <h1 class="text-3xl font-bold mb-4 text-center">Verifikasi Akun</h1>
-    <div class="bg-white p-6 rounded-lg shadow-md">
-      <form @submit.prevent="verifyAccount">
+  <div class="min-h-screen bg-gray-100 flex items-center justify-center p-4">
+    <div class="bg-white p-6 rounded-lg shadow-md w-full max-w-sm">
+      <h2 class="text-2xl font-bold mb-4">Verify Account</h2>
+      <form @submit.prevent="verifyOtp">
         <div class="mb-4">
-          <label class="block text-gray-700 text-sm font-bold mb-2" for="otp">Kode OTP</label>
-          <input v-model="otp" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="otp" type="text" />
+          <label for="otp" class="block text-gray-700">Enter OTP Code</label>
+          <input
+            v-model="otp"
+            type="text"
+            id="otp"
+            class="mt-1 p-2 w-full border border-gray-300 rounded"
+            placeholder="OTP Code"
+          />
         </div>
-        <div class="flex items-center justify-between">
-          <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">
-            Verifikasi
-          </button>
-        </div>
+        <button
+          type="submit"
+          class="w-full py-2 px-4 bg-indigo-500 text-white rounded hover:bg-indigo-600"
+        >
+          Verify
+        </button>
       </form>
     </div>
   </div>
@@ -19,25 +26,32 @@
 
 <script setup>
 import { ref } from 'vue';
-import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
+import axios from '@/plugins/axios';
 
 const otp = ref('');
-
-const store = useStore();
 const router = useRouter();
 
-const verifyAccount = async () => {
+const verifyOtp = async () => {
   try {
-    await store.dispatch('verifyAccount', {
-      otp: otp.value,
-    });
-    router.push('/');
+    await axios.post('/auth/verifikasi-akun', { otp: otp.value });
+    router.push('/login');
   } catch (error) {
-    console.error('Verification failed', error);
+    console.error('OTP verification failed:', error);
   }
 };
 </script>
 
+
 <style scoped>
+.popup {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
 </style>
