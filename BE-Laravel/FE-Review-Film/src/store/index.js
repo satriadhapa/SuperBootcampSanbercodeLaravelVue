@@ -13,6 +13,7 @@ const store = createStore({
   state: {
     token: localStorage.getItem('token') || '',
     user: parseJSON(localStorage.getItem('user')) || {},
+    profile: {}, // Add profile to state
     isRegistering: false,
   },
   mutations: {
@@ -22,12 +23,16 @@ const store = createStore({
     SET_USER(state, user) {
       state.user = user;
     },
+    SET_PROFILE(state, profile) {
+      state.profile = profile;
+    },
     SET_REGISTERING(state, status) {
       state.isRegistering = status;
     },
     LOGOUT(state) {
       state.token = '';
       state.user = {};
+      state.profile = {}; // Reset profile on logout
     },
   },
   actions: {
@@ -60,6 +65,30 @@ const store = createStore({
       commit('SET_USER', updatedUser);
       commit('SET_REGISTERING', false);
     },
+    async fetchProfile({ commit }) {
+      try {
+        const response = await axios.post('/get-profile');
+        const profile = response.data.data;
+
+        if (profile) {
+          commit('SET_PROFILE', profile);
+        }
+      } catch (error) {
+        console.error('Failed to fetch profile:', error);
+        commit('SET_PROFILE', {}); // Ensure profile is set to an empty object in case of error
+      }
+    },
+    async updateProfile({ commit }, profileData) {
+      try {
+        const response = await axios.post('/profile', profileData);
+        const updatedProfile = response.data.data;
+        commit('SET_PROFILE', updatedProfile); // Update profile in Vuex store
+        return response; // Optionally return response for further use
+      } catch (error) {
+        console.error('Failed to update profile:', error);
+        throw error; // Rethrow error for handling in component
+      }
+    },
     async fetchUser({ commit }) {
       const response = await axios.get('/me');
       const user = response.data.user;
@@ -77,6 +106,7 @@ const store = createStore({
   getters: {
     isAuthenticated: state => !!state.token,
     user: state => state.user,
+    profile: state => state.profile, // Add getter for profile
     isRegistering: state => state.isRegistering,
   },
 });

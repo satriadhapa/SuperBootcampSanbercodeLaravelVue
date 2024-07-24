@@ -14,15 +14,22 @@ class ProfileController extends Controller
      * Display a listing of the resource.
      */
     public function index()
-    {
-        $currentUser = auth()->user();
-        $profile = profil::with('user')-> find($currentUser->id);
+{
+    $currentUser = auth()->user();
+    $profile = Profil::where('user_id', $currentUser->id)->first();
 
+    if (!$profile) {
         return response()->json([
-            'message' => "tampil data profil",
-            'data' => $profile
-        ],200);
+            'message' => "Profile not found",
+            'data' => null
+        ], 404);
     }
+
+    return response()->json([
+        'message' => "Profile data fetched successfully",
+        'data' => $profile
+    ], 200);
+}
 
     /**
      * Store a newly created resource in storage.

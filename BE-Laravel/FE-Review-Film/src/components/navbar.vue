@@ -42,8 +42,9 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue';
+import { ref } from 'vue';
 import { useStore } from 'vuex';
+import { computed } from 'vue';
 
 const isOpen = ref(false);
 const store = useStore();
@@ -57,7 +58,7 @@ const logout = () => {
 </script>
 
 <style scoped>
-.logo {
-  transition: transform 0.5s ease;
+nav {
+  position: relative;
 }
 </style>
