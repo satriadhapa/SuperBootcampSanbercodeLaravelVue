@@ -8,12 +8,11 @@ function parseJSON(value) {
     return {};
   }
 }
-
 const store = createStore({
   state: {
     token: localStorage.getItem('token') || '',
-    user: parseJSON(localStorage.getItem('user')) || {},
-    profile: {}, // Add profile to state
+    user: JSON.parse(localStorage.getItem('user')) || {},
+    profile: {},
     isRegistering: false,
   },
   mutations: {
@@ -32,7 +31,7 @@ const store = createStore({
     LOGOUT(state) {
       state.token = '';
       state.user = {};
-      state.profile = {}; // Reset profile on logout
+      state.profile = {};
     },
   },
   actions: {
@@ -75,39 +74,24 @@ const store = createStore({
         }
       } catch (error) {
         console.error('Failed to fetch profile:', error);
-        commit('SET_PROFILE', {}); // Ensure profile is set to an empty object in case of error
       }
-    },
-    async updateProfile({ commit }, profileData) {
-      try {
-        const response = await axios.post('/profile', profileData);
-        const updatedProfile = response.data.data;
-        commit('SET_PROFILE', updatedProfile); // Update profile in Vuex store
-        return response; // Optionally return response for further use
-      } catch (error) {
-        console.error('Failed to update profile:', error);
-        throw error; // Rethrow error for handling in component
-      }
-    },
-    async fetchUser({ commit }) {
-      const response = await axios.get('/me');
-      const user = response.data.user;
-
-      localStorage.setItem('user', JSON.stringify(user));
-      commit('SET_USER', user);
     },
     logout({ commit }) {
-      localStorage.removeItem('token');
-      localStorage.removeItem('user');
-      commit('LOGOUT');
-      commit('SET_REGISTERING', false);
+      return new Promise((resolve) => {
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        delete axios.defaults.headers.common['Authorization'];
+        commit('LOGOUT');
+        resolve();
+      });
     },
   },
   getters: {
-    isAuthenticated: state => !!state.token,
-    user: state => state.user,
-    profile: state => state.profile, // Add getter for profile
-    isRegistering: state => state.isRegistering,
+    isLoggedIn: (state) => !!state.token,
+    user: (state) => state.user,
+    isRegistering: (state) => state.isRegistering,
+    profile: (state) => state.profile,
+    isAdmin: (state) => state.user && state.user.role && state.user.role.name === 'admin',
   },
 });
 

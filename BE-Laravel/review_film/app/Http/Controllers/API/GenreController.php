@@ -9,6 +9,12 @@ use App\Http\Requests\GenreRequest;
 
 class GenreController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth:api');
+        $this->middleware('isAdmin')->except(['index', 'show']);
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -26,13 +32,10 @@ class GenreController extends Controller
      */
     public function store(GenreRequest $request)
     {
-        // $validated = $request->validated();
-
         Genre::create($request->all());
 
         return response()->json([
             'message' => 'Data genre berhasil',
-            // 'data' => $validated
         ], 201);
     }
 
@@ -43,10 +46,10 @@ class GenreController extends Controller
     {
         $genres = Genre::find($id);
 
-        if(!$genres){
+        if (!$genres) {
             return response()->json([
-                "message" => 'id tidak ditemukan'  
-            ], 404); 
+                "message" => 'id tidak ditemukan'
+            ], 404);
         }
         return response()->json([
             "message" => "data id dengan id : $id ",
@@ -61,18 +64,16 @@ class GenreController extends Controller
     {
         $genres = Genre::find($id);
 
-        if(!$genres){
+        if (!$genres) {
             return response()->json([
-                "message" => 'id tidak ditemukan'  
-            ], '404'); 
+                "message" => 'id tidak ditemukan'
+            ], 404);
         }
         $genres->update($request->all());
 
-        // $genres->save();
         return response()->json([
             'message' => "Data genre berhasil di update dengan id : $id",
-            // 'data' => $validated
-        ], 201);
+        ], 200);
     }
 
     /**
@@ -82,15 +83,14 @@ class GenreController extends Controller
     {
         $genres = Genre::find($id);
 
-        if(!$genres){
+        if (!$genres) {
             return response()->json([
-                "message" => 'id tidak ditemukan'  
-            ], '404'); 
+                "message" => 'id tidak ditemukan'
+            ], 404);
         }
         $genres->delete();
         return response()->json([
             'message' => "Data genre berhasil di hapus dengan id : $id",
-            // 'data' => $validated
         ]);
     }
 }

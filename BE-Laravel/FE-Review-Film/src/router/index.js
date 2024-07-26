@@ -31,17 +31,15 @@ const routes = [
     name: 'Cast',
     component: Cast,
   },
-  {
-    path: '/profile',
-    name: 'Profile',
-    component: Profile,
-    meta: { requiresAuth: true },
+  { path: '/profile', 
+    name: 'Profile', 
+    component: Profile, 
+    meta: { requiresAuth: true } 
   },
-  {
-    path: '/update-user',
-    name: 'UpdateUser',
-    component: UpdateUser,
-    meta: { requiresAuth: true },
+  { path: '/update-user', 
+    name: 'UpdateUser', 
+    component: UpdateUser, 
+    meta: { requiresAuth: true }
   },
   {
     path: '/login',
@@ -53,10 +51,10 @@ const routes = [
     name: 'Register',
     component: Register,
   },
-  {
-    path: '/verify-account',
-    name: 'VerifyAccount',
-    component: VerifyAccount,
+  { path: '/verify-account', 
+    name: 'VerifyAccount', 
+    component: VerifyAccount, 
+    meta: { requiresAuth: true } 
   },
 ];
 
@@ -67,11 +65,8 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   if (to.matched.some(record => record.meta.requiresAuth)) {
-    if (!store.getters.isAuthenticated) {
-      next({
-        path: '/login',
-        query: { redirect: to.fullPath },
-      });
+    if (!store.getters.isLoggedIn) {
+      next('/login');
     } else {
       next();
     }
