@@ -8,11 +8,12 @@ function parseJSON(value) {
     return {};
   }
 }
+
 const store = createStore({
   state: {
     token: localStorage.getItem('token') || '',
-    user: JSON.parse(localStorage.getItem('user')) || {},
-    profile: {},
+    user: parseJSON(localStorage.getItem('user')) || {},
+    profile: {}, // Add profile to state
     isRegistering: false,
   },
   mutations: {
@@ -31,7 +32,7 @@ const store = createStore({
     LOGOUT(state) {
       state.token = '';
       state.user = {};
-      state.profile = {};
+      state.profile = {}; // Reset profile on logout
     },
   },
   actions: {
@@ -69,29 +70,30 @@ const store = createStore({
         const response = await axios.post('/get-profile');
         const profile = response.data.data;
 
-        if (profile) {
-          commit('SET_PROFILE', profile);
-        }
+        commit('SET_PROFILE', profile);
       } catch (error) {
         console.error('Failed to fetch profile:', error);
       }
     },
+    async fetchUser({ commit }) {
+      const response = await axios.get('/me');
+      const user = response.data.user;
+
+      localStorage.setItem('user', JSON.stringify(user));
+      commit('SET_USER', user);
+    },
     logout({ commit }) {
-      return new Promise((resolve) => {
-        localStorage.removeItem('token');
-        localStorage.removeItem('user');
-        delete axios.defaults.headers.common['Authorization'];
-        commit('LOGOUT');
-        resolve();
-      });
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+      commit('LOGOUT');
+      commit('SET_REGISTERING', false);
     },
   },
   getters: {
-    isLoggedIn: (state) => !!state.token,
-    user: (state) => state.user,
-    isRegistering: (state) => state.isRegistering,
-    profile: (state) => state.profile,
-    isAdmin: (state) => state.user && state.user.role && state.user.role.name === 'admin',
+    isAuthenticated: state => !!state.token,
+    user: state => state.user,
+    profile: state => state.profile, // Add getter for profile
+    isRegistering: state => state.isRegistering,
   },
 });
 
