@@ -9,14 +9,11 @@ use App\Models\Cast;
 
 class CastController extends Controller
 {
-
     public function __construct()
     {
-        $this->middleware(['auth:api', 'isAdmin'])->only('index');
+        // $this->middleware(['auth:api', 'isAdmin'])->only('index');
     }
-    /**
-     * Display a listing of the resource.
-     */
+
     public function index()
     {
         $casts = Cast::all();
@@ -26,24 +23,14 @@ class CastController extends Controller
         ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(CastRequest $request)
     {
-        // $validated = $request->validated();
-
         Cast::create($request->all());
-
         return response()->json([
             'message' => 'Data cast berhasil ditambah',
-            // 'data' => $validated
         ], 201);
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(string $id)
     {
         $casts = Cast::find($id);
@@ -59,9 +46,6 @@ class CastController extends Controller
         ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(CastRequest $request, string $id)
     {
         $casts = Cast::find($id);
@@ -72,20 +56,11 @@ class CastController extends Controller
             ], '404'); 
         }
         $casts->update($request->all());
-        // $casts->name = $request['name'];
-        // $casts->age = $request['age'];
-        // $casts->bio = $request['bio'];
-
-        // $casts->save();
         return response()->json([
             'message' => "Data cast berhasil di update dengan id : $id",
-            // 'data' => $validated
         ], 201);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(string $id)
     {
         $casts = Cast::find($id);
@@ -98,7 +73,6 @@ class CastController extends Controller
         $casts->delete();
         return response()->json([
             'message' => "Data cast berhasil di hapus dengan id : $id",
-            // 'data' => $validated
         ]);
     }
 }

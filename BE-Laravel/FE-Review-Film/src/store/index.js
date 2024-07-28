@@ -12,10 +12,11 @@ function parseJSON(value) {
 const store = createStore({
   state: {
     token: localStorage.getItem('token') || '',
-    user: parseJSON(localStorage.getItem('user')) || {},
+    user: JSON.parse(localStorage.getItem('user')) || {},
     profile: {},
     isRegistering: false,
     genres: [],
+    casts: [], // Tambahkan ini
   },
   mutations: {
     SET_TOKEN(state, token) {
@@ -37,6 +38,9 @@ const store = createStore({
     },
     SET_GENRES(state, genres) {
       state.genres = genres;
+    },
+    SET_CASTS(state, casts) { // Tambahkan ini
+      state.casts = casts;
     },
   },
   actions: {
@@ -92,12 +96,27 @@ const store = createStore({
 
       commit('SET_GENRES', genres);
     },
+    async fetchCasts({ commit }) { // Tambahkan ini
+      const response = await axios.get('/cast');
+      const casts = response.data.data;
+
+      commit('SET_CASTS', casts);
+    },
     async createGenre({ dispatch }, genre) {
       try {
         await axios.post('/genre', genre);
         dispatch('fetchGenres');
       } catch (error) {
         console.error('Error creating genre:', error);
+        throw error;
+      }
+    },
+    async createCast({ dispatch }, cast) { // Tambahkan ini
+      try {
+        await axios.post('/cast', cast);
+        dispatch('fetchCasts');
+      } catch (error) {
+        console.error('Error creating cast:', error);
         throw error;
       }
     },
@@ -110,12 +129,35 @@ const store = createStore({
         throw error;
       }
     },
-    async deleteGenre({ dispatch }, id) {
+    async fetchCasts({ commit }) {
+      const response = await axios.get('/cast');
+      const casts = response.data.data;
+      commit('SET_CASTS', casts);
+    },
+    async createCast({ dispatch }, cast) {
       try {
-        await axios.delete(`/genre/${id}`);
-        dispatch('fetchGenres');
+        await axios.post('/cast', cast);
+        dispatch('fetchCasts');
       } catch (error) {
-        console.error('Error deleting genre:', error);
+        console.error('Error creating cast:', error);
+        throw error;
+      }
+    },
+    async updateCast({ dispatch }, cast) {
+      try {
+        await axios.put(`/cast/${cast.id}`, cast);
+        dispatch('fetchCasts');
+      } catch (error) {
+        console.error('Error updating cast:', error);
+        throw error;
+      }
+    },
+    async deleteCast({ dispatch }, id) {
+      try {
+        await axios.delete(`/cast/${id}`);
+        dispatch('fetchCasts');
+      } catch (error) {
+        console.error('Error deleting cast:', error);
         throw error;
       }
     },
@@ -132,6 +174,7 @@ const store = createStore({
     profile: state => state.profile,
     isRegistering: state => state.isRegistering,
     genres: state => state.genres,
+    casts: state => state.casts, // Tambahkan ini
   },
 });
 

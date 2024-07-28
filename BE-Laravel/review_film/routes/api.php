@@ -29,7 +29,7 @@ use App\Http\Requests\MovieRequest;
 Route::prefix('v1')->group(function () {
     Route::apiResource('roles', RoleController::class);
     Route::apiResource("genre", GenreController::class)->only(['index', 'store', 'update', 'destroy']);
-    Route::apiResource("cast", CastController::class);
+    Route::apiResource("cast", CastController::class)->only(['index', 'store', 'update', 'destroy']);
     Route::apiResource('movie', MovieController::class);
     
     Route::prefix('auth')->group(function () {
