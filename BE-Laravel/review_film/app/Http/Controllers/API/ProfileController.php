@@ -14,26 +14,23 @@ class ProfileController extends Controller
      * Display a listing of the resource.
      */
     public function index()
-{
-    $currentUser = auth()->user();
-    $profile = Profil::where('user_id', $currentUser->id)->first();
+    {
+        $currentUser = auth()->user();
+        $profile = Profil::where('user_id', $currentUser->id)->first();
 
-    if (!$profile) {
+        if (!$profile) {
+            return response()->json([
+                'message' => "Profile not found",
+                'data' => null
+            ], 404);
+        }
+
         return response()->json([
-            'message' => "Profile not found",
-            'data' => null
-        ], 404);
+            'message' => "Profile data fetched successfully",
+            'data' => $profile
+        ], 200);
     }
 
-    return response()->json([
-        'message' => "Profile data fetched successfully",
-        'data' => $profile
-    ], 200);
-}
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -47,9 +44,8 @@ class ProfileController extends Controller
         }
         $currentUser = auth()->user();
 
-        $user = User::find($currentUser->id);
-        $profileData = profil::updateOrCreate(
-            ['user_id'=> $currentUser ->id],
+        $profileData = Profil::updateOrCreate(
+            ['user_id' => $currentUser->id],
             [
                 'age' => $request['age'],
                 'biodata' => $request['biodata'],
@@ -58,7 +54,7 @@ class ProfileController extends Controller
             ]   
         );
         return response()->json([
-            'message' => "tamabah dan update profil",
+            'message' => "Profile added or updated successfully",
             'data' => $profileData
         ]);
     }

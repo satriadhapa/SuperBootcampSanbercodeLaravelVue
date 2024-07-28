@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import Home from '@/views/Home.vue';
 import Film from '@/views/Film.vue';
-import Genre from '@/views/Genre.vue';
+import Genre from '@/components/Genre.vue';
 import Cast from '@/views/Cast.vue';
 import Profile from '@/views/Profile.vue';
 import UpdateUser from '@/views/UpdateUser.vue';
@@ -9,6 +9,8 @@ import Login from '@/views/Login.vue';
 import Register from '@/views/Register.vue';
 import VerifyAccount from '@/views/VerifyAccount.vue';
 import store from '@/store';
+import GenreList from '@/components/Genre.vue';
+import ManageGenres from '@/components/ManageGenre.vue';
 
 const routes = [
   {
@@ -24,7 +26,12 @@ const routes = [
   {
     path: '/genre',
     name: 'Genre',
-    component: Genre,
+    component: GenreList,
+  },
+  {
+    path: '/manage-genres',
+    name: 'ManageGenres',
+    component: ManageGenres,
   },
   {
     path: '/cast',

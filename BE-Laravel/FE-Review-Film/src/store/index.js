@@ -13,8 +13,9 @@ const store = createStore({
   state: {
     token: localStorage.getItem('token') || '',
     user: parseJSON(localStorage.getItem('user')) || {},
-    profile: {}, // Add profile to state
+    profile: {},
     isRegistering: false,
+    genres: [],
   },
   mutations: {
     SET_TOKEN(state, token) {
@@ -32,7 +33,10 @@ const store = createStore({
     LOGOUT(state) {
       state.token = '';
       state.user = {};
-      state.profile = {}; // Reset profile on logout
+      state.profile = {};
+    },
+    SET_GENRES(state, genres) {
+      state.genres = genres;
     },
   },
   actions: {
@@ -82,19 +86,43 @@ const store = createStore({
       localStorage.setItem('user', JSON.stringify(user));
       commit('SET_USER', user);
     },
-    logout({ commit }) {
-      localStorage.removeItem('token');
-      localStorage.removeItem('user');
-      commit('LOGOUT');
-      commit('SET_REGISTERING', false);
-    },
-  },
-  getters: {
-    isAuthenticated: state => !!state.token,
-    user: state => state.user,
-    profile: state => state.profile, // Add getter for profile
-    isRegistering: state => state.isRegistering,
-  },
-});
+    async fetchGenres({ commit }) {
+      const response = await axios.get('/genre');
+      const genres = response.data.data;
 
-export default store;
+      commit('SET_GENRES', genres);
+    },
+    async createGenre({ dispatch }, genre) {
+      await axios.post('/genre', genre);
+      dispatch('fetchGenres');
+    },
+    async updateGenre({ dispatch }, genre) {
+      await axios.put(`/genre/${genre.id}`, genre);
+      dispatch('fetchGenres');
+    },
+    async deleteGenre({ dispatch }, id) {
+      await axios.delete(`/genre/${id}`);
+      dispatch('fetchGenres');
+    },
+      async deleteGenre({ dispatch }, id) {
+        await axios.delete(`/genre/${id}`);
+        dispatch('fetchGenres');
+      },
+      logout({ commit }) {
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        commit('LOGOUT');
+        commit('SET_REGISTERING', false);
+      },
+    },
+    getters: {
+      isAuthenticated: state => !!state.token,
+      user: state => state.user,
+      profile: state => state.profile,
+      isRegistering: state => state.isRegistering,
+      genres: state => state.genres,
+    },
+  });
+  
+  export default store;
+  

@@ -1,9 +1,10 @@
 <template>
   <div id="app">
-    <Navbar v-if="!$route.meta.hideNavbar" />
+    <Navbar v-if="showNavbar" />
     <transition name="fade" mode="out-in">
       <router-view></router-view>
     </transition>
+    <Footer v-if="showFooter" />
   </div>
 </template>
 
@@ -15,6 +16,7 @@ import Footer from './components/footer.vue';
 
 const route = useRoute();
 const showNavbar = computed(() => !route.meta.hideNavbar);
+const showFooter = computed(() => !route.meta.hideFooter);
 </script>
 
 <style>
@@ -27,4 +29,3 @@ const showNavbar = computed(() => !route.meta.hideNavbar);
   opacity: 0;
 }
 </style>
-

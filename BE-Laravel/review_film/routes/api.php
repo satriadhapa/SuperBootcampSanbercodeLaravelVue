@@ -31,9 +31,8 @@ Route::prefix('v1')->group(function () {
     Route::apiResource("genre", GenreController::class);
     Route::apiResource("cast", CastController::class);
     Route::apiResource('movie', MovieController::class);
-    Route::apiResource('cast_movie', CastMovieController::class);
-
-    Route::prefix('auth')->group(function ($user) {
+    
+    Route::prefix('auth')->group(function () {
         Route::post('/register', [AuthController::class, 'register']);
         Route::post('login', [AuthController::class, 'login']);
         Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:api');
@@ -45,7 +44,11 @@ Route::prefix('v1')->group(function () {
     Route::get('/me', [AuthController::class, 'getUser'])->middleware('auth:api', 'isVerificationAccount');
     Route::post('profile', [ProfileController::class, 'store'])->middleware('auth:api', 'isVerificationAccount');
     Route::post('get-profile', [ProfileController::class, 'index'])->middleware('auth:api', 'isVerificationAccount');
-    Route::post('get-review', [ProfileController::class, 'store'])->middleware('auth:api', 'isVerificationAccount');
+    
+    // Tambahkan middleware admin untuk operasi CRUD genre
+    Route::middleware(['auth:api', 'isAdmin'])->group(function () {
+        Route::apiResource('genre', GenreController::class)->except(['index', 'show']);
+    });
 });
 
 
