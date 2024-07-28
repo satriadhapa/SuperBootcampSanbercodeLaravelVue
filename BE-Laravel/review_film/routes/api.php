@@ -28,7 +28,7 @@ use App\Http\Requests\MovieRequest;
 // Route::post("/v1/movie", [MovieController::class , 'store']);
 Route::prefix('v1')->group(function () {
     Route::apiResource('roles', RoleController::class);
-    Route::apiResource("genre", GenreController::class);
+    Route::apiResource("genre", GenreController::class)->only(['index', 'store', 'update', 'destroy']);
     Route::apiResource("cast", CastController::class);
     Route::apiResource('movie', MovieController::class);
     
@@ -44,11 +44,7 @@ Route::prefix('v1')->group(function () {
     Route::get('/me', [AuthController::class, 'getUser'])->middleware('auth:api', 'isVerificationAccount');
     Route::post('profile', [ProfileController::class, 'store'])->middleware('auth:api', 'isVerificationAccount');
     Route::post('get-profile', [ProfileController::class, 'index'])->middleware('auth:api', 'isVerificationAccount');
-    
-    // Tambahkan middleware admin untuk operasi CRUD genre
-    Route::middleware(['auth:api', 'isAdmin'])->group(function () {
-        Route::apiResource('genre', GenreController::class)->except(['index', 'show']);
-    });
+
 });
 
 

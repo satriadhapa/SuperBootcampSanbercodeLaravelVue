@@ -93,36 +93,46 @@ const store = createStore({
       commit('SET_GENRES', genres);
     },
     async createGenre({ dispatch }, genre) {
-      await axios.post('/genre', genre);
-      dispatch('fetchGenres');
+      try {
+        await axios.post('/genre', genre);
+        dispatch('fetchGenres');
+      } catch (error) {
+        console.error('Error creating genre:', error);
+        throw error;
+      }
     },
     async updateGenre({ dispatch }, genre) {
-      await axios.put(`/genre/${genre.id}`, genre);
-      dispatch('fetchGenres');
+      try {
+        await axios.put(`/genre/${genre.id}`, genre);
+        dispatch('fetchGenres');
+      } catch (error) {
+        console.error('Error updating genre:', error);
+        throw error;
+      }
     },
     async deleteGenre({ dispatch }, id) {
-      await axios.delete(`/genre/${id}`);
-      dispatch('fetchGenres');
-    },
-      async deleteGenre({ dispatch }, id) {
+      try {
         await axios.delete(`/genre/${id}`);
         dispatch('fetchGenres');
-      },
-      logout({ commit }) {
-        localStorage.removeItem('token');
-        localStorage.removeItem('user');
-        commit('LOGOUT');
-        commit('SET_REGISTERING', false);
-      },
+      } catch (error) {
+        console.error('Error deleting genre:', error);
+        throw error;
+      }
     },
-    getters: {
-      isAuthenticated: state => !!state.token,
-      user: state => state.user,
-      profile: state => state.profile,
-      isRegistering: state => state.isRegistering,
-      genres: state => state.genres,
+    logout({ commit }) {
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+      commit('LOGOUT');
+      commit('SET_REGISTERING', false);
     },
-  });
-  
-  export default store;
-  
+  },
+  getters: {
+    isAuthenticated: state => !!state.token,
+    user: state => state.user,
+    profile: state => state.profile,
+    isRegistering: state => state.isRegistering,
+    genres: state => state.genres,
+  },
+});
+
+export default store;

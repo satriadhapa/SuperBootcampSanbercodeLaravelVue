@@ -6,13 +6,14 @@ use App\Http\Controllers\Controller;
 use App\Models\Genre;
 use Illuminate\Http\Request;
 use App\Http\Requests\GenreRequest;
+use Illuminate\Support\Facades\Log;
 
 class GenreController extends Controller
 {
     public function __construct()
     {
         $this->middleware('auth:api')->except(['index', 'show']);
-        $this->middleware('isAdmin')->except(['index', 'show']);
+        
     }
 
     /**
@@ -20,23 +21,29 @@ class GenreController extends Controller
      */
     public function index()
     {
-        $genres = Genre::all();
-        return response()->json([
-            "message" => "tampil semua data",
-            "data" => $genres
-        ]);
+        try {
+            $genres = Genre::all();
+            return response()->json([
+                "message" => "tampil semua data",
+                "data" => $genres
+            ]);
+        } catch (\Exception $e) {
+            Log::error('Error fetching genres: ' . $e->getMessage());
+            return response()->json(['error' => 'Error fetching genres'], 500);
+        }
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(GenreRequest $request)
     {
-        Genre::create($request->all());
-
-        return response()->json([
-            'message' => 'Data genre berhasil',
-        ], 201);
+        try {
+            Genre::create($request->all());
+            return response()->json([
+                'message' => 'Data genre berhasil',
+            ], 201);
+        } catch (\Exception $e) {
+            Log::error('Error creating genre: ' . $e->getMessage());
+            return response()->json(['error' => 'Error creating genre'], 500);
+        }
     }
 
     /**
