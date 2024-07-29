@@ -14,35 +14,20 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import FilmCard from '@/components/FilmCard.vue';
-import poster1 from '@/assets/minion.png';
-import poster2 from '@/assets/avenger.png';
-import poster3 from '@/assets/satuhari.png';
-import poster4 from '@/assets/serdam.jpg';
+import axios from '@/plugins/axios.js';
 
-const films = ref([
-  {
-    title: 'Minion',
-    description: 'Deskripsi singkat tentang Film A',
-    poster: poster1,
-  },
-  {
-    title: 'Avenger',
-    description: 'Perjuangan Superhero',
-    poster: poster2,
-  },
-  {
-    title: 'Satu Hari',
-    description: 'Berbeda dalam 1 hari',
-    poster: poster3,
-  },
-  {
-    title: 'Serdam',
-    description: 'The death whistle',
-    poster: poster4,
-  },
-]);
+const films = ref([]);
+
+onMounted(async () => {
+  try {
+    const response = await axios.get('/movie');
+    films.value = response.data.data;
+  } catch (error) {
+    console.error('Failed to fetch movies:', error);
+  }
+});
 </script>
 
 <style scoped>

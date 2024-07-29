@@ -9,7 +9,7 @@
       />
       <div class="p-4">
         <h2 class="text-xl font-bold mb-2">{{ film.title }}</h2>
-        <p class="text-gray-700">{{ film.description }}</p>
+        <p class="text-gray-700">{{ film.summary }}</p>
       </div>
     </div>
 

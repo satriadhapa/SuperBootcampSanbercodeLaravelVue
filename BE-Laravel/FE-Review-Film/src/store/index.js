@@ -16,17 +16,19 @@ const store = createStore({
     profile: {},
     isRegistering: false,
     genres: [],
-    casts: [], // Tambahkan ini
+    casts: [],
+    films: [],
   },
   mutations: {
     SET_TOKEN(state, token) {
       state.token = token;
     },
-    SET_USER(state, user) {
-      state.user = user;
-    },
     SET_PROFILE(state, profile) {
       state.profile = profile;
+    },
+    SET_USER(state, user) {
+      state.user = user;
+      localStorage.setItem('user', JSON.stringify(user)); // Update localStorage
     },
     SET_REGISTERING(state, status) {
       state.isRegistering = status;
@@ -39,9 +41,25 @@ const store = createStore({
     SET_GENRES(state, genres) {
       state.genres = genres;
     },
-    SET_CASTS(state, casts) { // Tambahkan ini
+    SET_CASTS(state, casts) {
+      
       state.casts = casts;
     },
+    SET_MOVIES(state, movies) { // Add SET_MOVIES mutation
+      state.movies = movies;
+    },
+    ADD_MOVIE(state, movie) { // Add ADD_MOVIE mutation
+      state.movies.push(movie);
+    },
+    UPDATE_MOVIE(state, updatedMovie) { // Add UPDATE_MOVIE mutation
+      const index = state.movies.findIndex(movie => movie.id === updatedMovie.id);
+      if (index !== -1) {
+        state.movies.splice(index, 1, updatedMovie);
+      }
+    },
+    DELETE_MOVIE(state, movieId) { // Add DELETE_MOVIE mutation
+      state.movies = state.movies.filter(movie => movie.id !== movieId);
+    }
   },
   actions: {
     async login({ commit }, credentials) {
@@ -73,12 +91,20 @@ const store = createStore({
       commit('SET_USER', updatedUser);
       commit('SET_REGISTERING', false);
     },
+    async updateProfile({ commit }, profileData) {
+      try {
+        const response = await axios.post('/update-user', profileData);
+        commit('SET_PROFILE', response.data.user);
+        commit('SET_USER', response.data.user); // Update user state
+      } catch (error) {
+        console.error('Failed to update profile:', error);
+        throw error;
+      }
+    },
     async fetchProfile({ commit }) {
       try {
         const response = await axios.post('/get-profile');
-        const profile = response.data.data;
-
-        commit('SET_PROFILE', profile);
+        commit('SET_PROFILE', response.data.data);
       } catch (error) {
         console.error('Failed to fetch profile:', error);
       }
@@ -96,7 +122,7 @@ const store = createStore({
 
       commit('SET_GENRES', genres);
     },
-    async fetchCasts({ commit }) { // Tambahkan ini
+    async fetchCasts({ commit }) { 
       const response = await axios.get('/cast');
       const casts = response.data.data;
 
@@ -111,7 +137,7 @@ const store = createStore({
         throw error;
       }
     },
-    async createCast({ dispatch }, cast) { // Tambahkan ini
+    async createCast({ dispatch }, cast) {
       try {
         await axios.post('/cast', cast);
         dispatch('fetchCasts');
@@ -161,6 +187,22 @@ const store = createStore({
         throw error;
       }
     },
+    async fetchMovies({ commit }) { // Fetch movies action
+      const response = await axios.get('/movies');
+      commit('SET_MOVIES', response.data.data);
+    },
+    async createMovie({ commit }, movieData) { // Create movie action
+      const response = await axios.post('/movies', movieData);
+      commit('ADD_MOVIE', response.data.data);
+    },
+    async updateMovie({ commit }, movieData) { // Update movie action
+      const response = await axios.put(`/movies/${movieData.id}`, movieData);
+      commit('UPDATE_MOVIE', response.data.data);
+    },
+    async deleteMovie({ commit }, movieId) { // Delete movie action
+      await axios.delete(`/movies/${movieId}`);
+      commit('DELETE_MOVIE', movieId);
+    },
     logout({ commit }) {
       localStorage.removeItem('token');
       localStorage.removeItem('user');
@@ -174,7 +216,8 @@ const store = createStore({
     profile: state => state.profile,
     isRegistering: state => state.isRegistering,
     genres: state => state.genres,
-    casts: state => state.casts, // Tambahkan ini
+    casts: state => state.casts,
+    movies: state => state.movies,
   },
 });
 

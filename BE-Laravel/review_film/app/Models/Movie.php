@@ -9,13 +9,18 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 class Movie extends Model
 {
     use HasFactory, HasUuids;
-    protected $table = 'movies';
-    protected $fillable = ['title','summary','poster','year','genre_id'];
+
+    protected $fillable = ['title', 'summary', 'poster', 'year', 'genre_id'];
 
     public $timestamps = false;
 
-    public function review()
+    public function genre()
     {
-        $this->hasMany(Review::class, 'movie_id');
+        return $this->belongsTo(Genre::class, 'genre_id');
+    }
+
+    public function reviews()
+    {
+        return $this->hasMany(Review::class, 'movie_id');
     }
 }

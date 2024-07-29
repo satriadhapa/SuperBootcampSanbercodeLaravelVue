@@ -10,6 +10,7 @@ use App\Http\Controllers\API\CastMovieController;
 use App\Http\Controllers\API\ProfileController;
 use App\Http\Controllers\API\RoleController;
 use App\Http\Requests\MovieRequest;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -28,10 +29,13 @@ use App\Http\Requests\MovieRequest;
 // Route::post("/v1/movie", [MovieController::class , 'store']);
 Route::prefix('v1')->group(function () {
     Route::apiResource('roles', RoleController::class);
-    Route::apiResource("genre", GenreController::class)->only(['index', 'store', 'update', 'destroy']);
-    Route::apiResource("cast", CastController::class)->only(['index', 'store', 'update', 'destroy']);
     Route::apiResource('movie', MovieController::class);
-    
+
+    Route::middleware('auth:api', 'isVerificationAccount')->group(function () {
+        Route::apiResource('genre', GenreController::class)->only(['index', 'store', 'update', 'destroy']);
+        Route::apiResource('cast', CastController::class)->only(['index', 'store', 'update', 'destroy']);
+    });
+
     Route::prefix('auth')->group(function () {
         Route::post('/register', [AuthController::class, 'register']);
         Route::post('login', [AuthController::class, 'login']);
@@ -44,8 +48,4 @@ Route::prefix('v1')->group(function () {
     Route::get('/me', [AuthController::class, 'getUser'])->middleware('auth:api', 'isVerificationAccount');
     Route::post('profile', [ProfileController::class, 'store'])->middleware('auth:api', 'isVerificationAccount');
     Route::post('get-profile', [ProfileController::class, 'index'])->middleware('auth:api', 'isVerificationAccount');
-
 });
-
-
-    
