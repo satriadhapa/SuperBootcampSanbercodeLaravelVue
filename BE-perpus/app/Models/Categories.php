@@ -2,17 +2,21 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Concerns\HasUlids;
-use Illuminate\Database\Eloquent\Concerns\HasUuids;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Categories extends Model
+class Category extends Model
 {
-    use HasFactory,HasUuids;
-    protected $table = "categories";
-    protected $fillable = [
-        'name'
-    ];
-    public $timestamps = false;
+    use HasFactory;
+
+    public $incrementing = false;
+    protected $keyType = 'uuid';
+
+    protected $fillable = ['id', 'name'];
+
+    public function books()
+    {
+        return $this->hasMany(Book::class);
+    }
 }
+
