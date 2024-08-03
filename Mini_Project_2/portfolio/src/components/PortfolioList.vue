@@ -19,6 +19,7 @@ import project3 from '@/assets/postman.png';
 import project4 from '@/assets/Customer Churn Prediction.png';
 import project5 from '@/assets/project sistem.png';
 import project6 from '@/assets/reviewfilm.png';
+import project7 from '@/assets/kupus.png';
 
 const portfolioItems = ref([
   { 
@@ -56,6 +57,12 @@ const portfolioItems = ref([
     description: 'Website review film, menggunakan VUEJS 3 (ON PROGRESS)', 
     link: 'https://super-bootcamp-sanbercode-laravel-vue-st47.vercel.app/',
     image: project6
+  },
+  { 
+    name: 'Project Website Karya Puisi SMP ', 
+    description: 'Website kupus (Kumpulan Puisi SMP)', 
+    link: 'https://webpuisi.vercel.app/',
+    image: project7
   },
 ]);
 </script>
