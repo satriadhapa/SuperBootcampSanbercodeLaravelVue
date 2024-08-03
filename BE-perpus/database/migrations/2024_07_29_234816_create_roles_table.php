@@ -10,19 +10,15 @@ return new class extends Migration
      * Run the migrations.
      */
     public function up()
-{
+    {
     Schema::create('roles', function (Blueprint $table) {
         $table->uuid('id')->primary();
-        $table->string('name');
+        $table->string('name', 255);
         $table->timestamps();
     });
-}
+    }
 
-
-    /**
-     * Reverse the migrations.
-     */
-    public function down(): void
+    public function down()
     {
         Schema::dropIfExists('roles');
     }

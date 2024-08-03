@@ -13,21 +13,20 @@ return new class extends Migration
 {
     Schema::create('borrows', function (Blueprint $table) {
         $table->uuid('id')->primary();
-        $table->datetime('load_date');
-        $table->datetime('barrow_date');
+        $table->dateTime('load_date');
+        $table->dateTime('barrow_date');
         $table->uuid('book_id');
         $table->uuid('user_id');
-        $table->foreign('book_id')->references('id')->on('books');
-        $table->foreign('user_id')->references('id')->on('users');
         $table->timestamps();
+
+        $table->foreign('book_id')->references('id')->on('books')->onDelete('cascade');
+        $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
     });
 }
 
-    /**
-     * Reverse the migrations.
-     */
-    public function down(): void
-    {
-        Schema::dropIfExists('borrows');
-    }
+public function down()
+{
+    Schema::dropIfExists('borrows');
+}
+
 };

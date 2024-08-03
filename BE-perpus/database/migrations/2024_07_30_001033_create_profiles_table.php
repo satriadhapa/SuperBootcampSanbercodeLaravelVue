@@ -16,17 +16,15 @@ return new class extends Migration
         $table->text('bio')->nullable();
         $table->integer('age')->nullable();
         $table->uuid('user_id');
-        $table->foreign('user_id')->references('id')->on('users');
         $table->timestamps();
+
+        $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
     });
 }
 
+public function down()
+{
+    Schema::dropIfExists('profiles');
+}
 
-    /**
-     * Reverse the migrations.
-     */
-    public function down(): void
-    {
-        Schema::dropIfExists('profiles');
-    }
 };

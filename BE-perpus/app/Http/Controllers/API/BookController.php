@@ -3,82 +3,58 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Http\Requests\BookRequest;
 use App\Models\Book;
-use Illuminate\Support\Str;
+use Illuminate\Http\Request;
 
 class BookController extends Controller
 {
-    public function index()
+    public function __construct()
     {
-        return Book::all();
+        $this->middleware('owner')->except(['index', 'show']);
+        $this->middleware('user')->only(['index', 'show']);
     }
 
-    public function store(Request $request)
+    public function index()
     {
-        $request->validate([
-            'title' => 'required|string|max:255',
-            'summary' => 'string',
-            'image' => 'string',
-            'stok' => 'integer',
-            'category_id' => 'required|uuid|exists:categories,id',
-        ]);
-
-        $book = Book::create([
-            'id' => Str::uuid(),
-            'title' => $request->title,
-            'summary' => $request->summary,
-            'image' => $request->image,
-            'stok' => $request->stok,
-            'category_id' => $request->category_id,
-        ]);
-
-        return response()->json(['message' => 'Book created successfully', 'book' => $book], 201);
+        $books = Book::all();
+        return response()->json($books);
     }
 
     public function show($id)
     {
         $book = Book::find($id);
-
         if (!$book) {
             return response()->json(['message' => 'Book not found'], 404);
         }
-
-        return $book;
+        return response()->json($book);
     }
 
-    public function update(Request $request, $id)
+    public function store(BookRequest $request)
+    {
+        $book = Book::create($request->validated());
+        return response()->json($book, 201);
+    }
+
+    public function update(BookRequest $request, $id)
     {
         $book = Book::find($id);
-
         if (!$book) {
             return response()->json(['message' => 'Book not found'], 404);
         }
 
-        $request->validate([
-            'title' => 'string|max:255',
-            'summary' => 'string',
-            'image' => 'string',
-            'stok' => 'integer',
-            'category_id' => 'uuid|exists:categories,id',
-        ]);
-
-        $book->update($request->all());
-
-        return response()->json(['message' => 'Book updated successfully', 'book' => $book], 200);
+        $book->update($request->validated());
+        return response()->json($book);
     }
 
     public function destroy($id)
     {
         $book = Book::find($id);
-
         if (!$book) {
             return response()->json(['message' => 'Book not found'], 404);
         }
 
         $book->delete();
-
-        return response()->json(['message' => 'Book deleted successfully'], 200);
+        return response()->json(['message' => 'Book deleted successfully']);
     }
 }
-

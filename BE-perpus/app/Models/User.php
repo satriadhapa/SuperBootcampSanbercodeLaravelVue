@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Support\Str;
 
 class User extends Authenticatable
 {
@@ -14,12 +15,19 @@ class User extends Authenticatable
 
     public $incrementing = false;
     protected $table = 'users';
-    protected $keyType = 'uuid';
 
     protected $fillable = [
         'name', 'email', 'password', 'role_id'
     ];
-
+    protected static function boot()
+    {
+        parent::boot();
+        static::creating(function ($model) {
+            if (empty($model->{$model->getKeyName()})) {
+                $model->{$model->getKeyName()} = (string) Str::uuid();
+            }
+        });
+    }
     protected $hidden = [
         'password', 'remember_token',
     ];

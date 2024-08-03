@@ -3,43 +3,89 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ProfileRequest;
 use App\Models\Profile;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class ProfileController extends Controller
 {
     public function index()
-    {
-        return Profile::all();
+{
+    $currentUser = auth()->user();
+
+    if (!$currentUser) {
+        return response()->json(['message' => 'User not authenticated'], 401);
     }
 
+    $profiles = Profile::where('user_id', $currentUser->id)->first();
+
+    if (!$profiles) {
+        return response()->json(['message' => 'Profile not found for this user'], 404);
+    }
+
+    return response()->json($profiles);
+}
+
+    
+public function store(Request $request)
+{
+    $validator = Validator::make($request->all(), [
+        'bio' => 'required|string',
+        'age' => 'required|integer',
+    ]);
+
+    if ($validator->fails()) {
+        return response()->json($validator->errors(), 422);
+    }
+
+    $currentUser = auth()->user();
+
+    if (!$currentUser) {
+        return response()->json(['message' => 'User not authenticated'], 401);
+    }
+
+    $profileData = Profile::updateOrCreate(
+        ['user_id' => $currentUser->id],
+        [
+            'bio' => $request['bio'],
+            'age' => $request['age'],
+        ]
+    );
+
+    return response()->json([
+        'message' => 'Profile added or updated successfully',
+        'data' => $profileData
+    ], 201);
+}
+    
     public function show($id)
     {
-        return Profile::findOrFail($id);
+        // $profile = Profile::find($id);
+        // if (!$profile) {
+        //     return response()->json(['message' => 'Profile not found'], 404);
+        // }
+        // return response()->json($profile);
     }
-
-    public function store(Request $request)
-    {
-        $request->validate([
-            'bio' => 'nullable|string',
-            'age' => 'nullable|integer',
-            'user_id' => 'required|uuid|exists:users,id',
-        ]);
-
-        $profile = Profile::create($request->all());
-        return response()->json($profile, 201);
-    }
-
     public function update(Request $request, $id)
     {
-        $profile = Profile::findOrFail($id);
-        $profile->update($request->all());
-        return response()->json($profile);
+        // $profile = Profile::find($id);
+        // if (!$profile) {
+        //     return response()->json(['message' => 'Profile not found'], 404);
+        // }
+
+        // $profile->update($request->validated());
+        // return response()->json($profile);
     }
 
     public function destroy($id)
     {
-        Profile::destroy($id);
-        return response()->json(['message' => 'Profile deleted successfully']);
+        // $profile = Profile::find($id);
+        // if (!$profile) {
+        //     return response()->json(['message' => 'Profile not found'], 404);
+        // }
+
+        // $profile->delete();
+        // return response()->json(['message' => 'Profile deleted successfully']);
     }
 }

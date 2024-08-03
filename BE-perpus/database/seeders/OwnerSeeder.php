@@ -2,28 +2,26 @@
 
 namespace Database\Seeders;
 
-use App\Models\Role;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
+use App\Models\Role;
+use App\Models\User;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
 
 class OwnerSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     *
-     * @return void
-     */
     public function run()
     {
         $ownerRole = Role::where('name', 'owner')->first();
 
-        Role::create([
-            'name' => 'owner',
-            'email' => 'owner@gmail.com',
-            'password' => Hash::make('090909'),
-            'role_id' => $ownerRole->id
-        ]);
+        if ($ownerRole) {
+            User::create([
+                'name' => 'Owner',
+                'email' => 'owner@gmail.com',
+                'password' => Hash::make('090909'),
+                'role_id' => $ownerRole->id
+            ]);
+        } else {
+            echo "Owner role not found.\n";
+        }
     }
 }

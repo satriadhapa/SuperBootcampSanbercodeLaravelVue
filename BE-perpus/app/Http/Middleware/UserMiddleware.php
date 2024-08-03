@@ -6,14 +6,15 @@ use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class OwnerMiddleware
+class UserMiddleware
 {
     public function handle(Request $request, Closure $next)
     {
-        if (Auth::check() && Auth::user()->role->name === 'owner') {
+        if (Auth::check() && Auth::user()->role->name === 'user') {
             return $next($request);
         }
 
         return response()->json(['message' => 'Access denied.'], 403);
     }
 }
+
