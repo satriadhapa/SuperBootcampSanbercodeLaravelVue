@@ -3,12 +3,16 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
-use App\Models\Borrow;
 use App\Models\Borrows;
 use Illuminate\Http\Request;
 
 class BorrowController extends Controller
 {
+    
+    public function __construct()
+    {
+        $this->middleware('owner');
+    }
     public function index()
     {
         return Borrows::all();

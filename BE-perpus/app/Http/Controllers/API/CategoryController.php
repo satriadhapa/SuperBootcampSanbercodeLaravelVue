@@ -9,6 +9,20 @@ use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('owner');
+        $this->middleware('user')->only(['index', 'show']);
+        
+    }
+     public function show($id)
+     {
+        $category = Category::find($id);
+        if (!$category) {
+            return response()->json(['message' => 'Category not found'], 404);
+        }
+        return response()->json($category);
+     }
     public function index()
     {
         $categories = Category::all();
