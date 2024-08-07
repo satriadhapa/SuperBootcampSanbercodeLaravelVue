@@ -1,6 +1,7 @@
 <script setup>
 import { computed } from 'vue';
 import { useRouter } from 'vue-router';
+import Footer from './components/Footer.vue';
 
 const router = useRouter();
 
@@ -16,12 +17,12 @@ const logout = () => {
   <header class="bg-blue-500 text-white p-4">
     <nav class="container mx-auto flex justify-between items-center">
       <div>
-        <router-link to="/" class="text-2xl font-bold">FE-Perpus</router-link>
+        <router-link to="/" class="text-2xl font-bold">Perpustakaan</router-link>
       </div>
       <div>
         <router-link to="/" class="mr-4">Home</router-link>
-        <router-link to="/profile" v-if="isLoggedIn" class="mr-4">Update Profile</router-link>
         <router-link to="/profile-display" v-if="isLoggedIn" class="mr-4">detail Profile</router-link>
+        <router-link to="/profile" v-if="isLoggedIn" class="mr-4">Update Profile</router-link>
         <router-link to="/login" v-if="!isLoggedIn" class="mr-4">Login</router-link>
         <router-link to="/register" v-if="!isLoggedIn" class="mr-4">Register</router-link>
         <button v-if="isLoggedIn" @click="logout" class="bg-red-500 px-3 py-1 rounded">Logout</button>
@@ -31,6 +32,7 @@ const logout = () => {
   <main class="container mx-auto p-4">
     <router-view />
   </main>
+  <Footer />
 </template>
 
 <style scoped>
@@ -60,6 +62,6 @@ button {
 }
 
 button:hover {
-  background-color: #dc2626;
+  background-color: #000000;
 }
 </style>

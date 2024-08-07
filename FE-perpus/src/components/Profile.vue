@@ -16,7 +16,7 @@ const fetchProfile = async () => {
     bio.value = response.data.bio;
     age.value = response.data.age;
   } catch (error) {
-    errorMessage.value = 'Error fetching profile.';
+    errorMessage.value = 'Belum Ada Data profile.';
   }
 };
 
@@ -26,10 +26,10 @@ const updateProfile = async () => {
       bio: bio.value,
       age: age.value
     });
-    successMessage.value = 'Profile updated successfully.';
-    router.push('/profile-display'); // Redirect to profile display page
+    successMessage.value = 'Profile updated berhasil.';
+    router.push('/profile-display'); // Redirect to profile display
   } catch (error) {
-    errorMessage.value = 'Error updating profile.';
+    errorMessage.value = 'Error update profile.';
   }
 };
 

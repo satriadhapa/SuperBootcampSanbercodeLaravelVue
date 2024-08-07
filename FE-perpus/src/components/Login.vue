@@ -26,7 +26,7 @@
       });
       console.log(response.data);
       localStorage.setItem('token', response.data.token);
-      router.push('/home');
+      router.push('/');
     } catch (error) {
       console.error(error);
     }

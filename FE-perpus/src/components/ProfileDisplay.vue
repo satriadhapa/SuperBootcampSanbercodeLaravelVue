@@ -10,7 +10,7 @@ const fetchProfile = async () => {
     const response = await axios.get('/profiles');
     profile.value = response.data;
   } catch (error) {
-    errorMessage.value = 'Error fetching profile.';
+    errorMessage.value = 'Data Profil masih Kosong';
   }
 };
 
