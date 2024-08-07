@@ -22,7 +22,7 @@ class Book extends Model
 
     public function borrows()
     {
-        return $this->hasMany(Borrows::class);
+        return $this->hasMany(Borrow::class);
     }
 }
 
