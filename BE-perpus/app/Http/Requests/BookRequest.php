@@ -8,32 +8,31 @@ class BookRequest extends FormRequest
 {
     public function authorize()
     {
-        return true;
+        return true; // Ensure this is set to true or properly handle authorization
     }
 
     public function rules()
     {
         return [
             'title' => 'required|string|max:255',
-            'summary' => 'nullable|string',
-            'image' => 'nullable|mimes:jpg,bmp,png',
+            'summary' => 'required|string',
             'stok' => 'required|integer',
             'category_id' => 'required|exists:categories,id',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ];
     }
 
     public function messages()
     {
         return [
-            'title.required' => 'Judul harus diisi',
-            'summary.string' => 'Ringkasan harus berupa teks',
-            'image.mimes' => 'Hanya format JPG, BMP, dan PNG yang diperbolehkan untuk poster',
-            'stok.required' => 'Stok harus diisi',
-            'stok.integer' => 'Stok harus berupa angka',
-            'category_id.required' => 'Kategori harus diisi',
-            'category_id.exists' => 'Kategori harus ada di database',
+            'title.required' => 'The title field is required.',
+            'summary.required' => 'The summary field is required.',
+            'stok.required' => 'The stok field is required.',
+            'category_id.required' => 'The category field is required.',
+            'category_id.exists' => 'The selected category is invalid.',
+            'image.image' => 'The image must be an image file.',
+            'image.mimes' => 'The image must be a file of type: jpeg, png, jpg, gif, svg.',
+            'image.max' => 'The image may not be greater than 2048 kilobytes.',
         ];
     }
 }
-
-

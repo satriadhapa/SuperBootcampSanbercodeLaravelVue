@@ -1,219 +1,361 @@
 <template>
-    <div>
-      <h1 class="text-2xl font-bold mb-4">Books</h1>
-      <div v-if="errorMessage" class="text-red-500 mb-4">{{ errorMessage }}</div>
-      <div v-if="books.length === 0" class="text-gray-500">No books available.</div>
-      <div v-if="isOwner" class="mb-4">
-        <button @click="showCreateModal = true" class="bg-blue-500 text-white px-4 py-2 rounded">Add Book</button>
-      </div>
-      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-        <div v-for="book in books" :key="book.id" class="border p-4 rounded">
-          <img v-if="book.image" :src="book.image" alt="Book Image" class="w-full h-48 object-cover mb-4">
-          <h2 class="text-lg font-semibold mb-2">{{ book.title }}</h2>
-          <p class="text-gray-700 mb-2">{{ book.summary }}</p>
-          <p class="text-gray-500">Stok: {{ book.stok }}</p>
-          <div v-if="isOwner">
-            <button @click="editBook(book)" class="bg-yellow-500 text-white px-2 py-1 rounded mr-2">Edit</button>
-            <button @click="deleteBook(book.id)" class="bg-red-500 text-white px-2 py-1 rounded">Delete</button>
-          </div>
-        </div>
-      </div>
-  
-      <!-- Create Book Modal -->
-      <div v-if="showCreateModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-        <div class="bg-white p-6 rounded shadow-lg w-full max-w-md">
-          <h2 class="text-xl font-bold mb-4">Add Book</h2>
-          <form @submit.prevent="createBook">
-            <div class="mb-4">
-              <label for="title" class="block text-sm font-medium mb-1">Title</label>
-              <input v-model="newBook.title" id="title" type="text" class="w-full border border-gray-300 p-2 rounded"/>
-            </div>
-            <div class="mb-4">
-              <label for="summary" class="block text-sm font-medium mb-1">Summary</label>
-              <textarea v-model="newBook.summary" id="summary" rows="4" class="w-full border border-gray-300 p-2 rounded"></textarea>
-            </div>
-            <div class="mb-4">
-              <label for="stok" class="block text-sm font-medium mb-1">Stok</label>
-              <input v-model="newBook.stok" id="stok" type="number" class="w-full border border-gray-300 p-2 rounded"/>
-            </div>
-            <div class="mb-4">
-              <label for="category_id" class="block text-sm font-medium mb-1">Category</label>
-              <select v-model="newBook.category_id" id="category_id" class="w-full border border-gray-300 p-2 rounded">
-                <option v-for="category in categories" :key="category.id" :value="category.id">{{ category.name }}</option>
-              </select>
-            </div>
-            <div class="mb-4">
-              <label for="image" class="block text-sm font-medium mb-1">Image</label>
-              <input @change="handleImageUpload" id="image" type="file" class="w-full border border-gray-300 p-2 rounded"/>
-            </div>
-            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Create</button>
-            <button type="button" @click="showCreateModal = false" class="ml-2 bg-gray-500 text-white px-4 py-2 rounded">Cancel</button>
-          </form>
-        </div>
-      </div>
-  
-      <!-- Edit Book Modal -->
-      <div v-if="showEditModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-        <div class="bg-white p-6 rounded shadow-lg w-full max-w-md">
-          <h2 class="text-xl font-bold mb-4">Edit Book</h2>
-          <form @submit.prevent="updateBook">
-            <div class="mb-4">
-              <label for="edit-title" class="block text-sm font-medium mb-1">Title</label>
-              <input v-model="currentBook.title" id="edit-title" type="text" class="w-full border border-gray-300 p-2 rounded"/>
-            </div>
-            <div class="mb-4">
-              <label for="edit-summary" class="block text-sm font-medium mb-1">Summary</label>
-              <textarea v-model="currentBook.summary" id="edit-summary" rows="4" class="w-full border border-gray-300 p-2 rounded"></textarea>
-            </div>
-            <div class="mb-4">
-              <label for="edit-stok" class="block text-sm font-medium mb-1">Stok</label>
-              <input v-model="currentBook.stok" id="edit-stok" type="number" class="w-full border border-gray-300 p-2 rounded"/>
-            </div>
-            <div class="mb-4">
-              <label for="edit-category_id" class="block text-sm font-medium mb-1">Category</label>
-              <select v-model="currentBook.category_id" id="edit-category_id" class="w-full border border-gray-300 p-2 rounded">
-                <option v-for="category in categories" :key="category.id" :value="category.id">{{ category.name }}</option>
-              </select>
-            </div>
-            <div class="mb-4">
-              <label for="edit-image" class="block text-sm font-medium mb-1">Image</label>
-              <input @change="handleEditImageUpload" id="edit-image" type="file" class="w-full border border-gray-300 p-2 rounded"/>
-            </div>
-            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Update</button>
-            <button type="button" @click="showEditModal = false" class="ml-2 bg-gray-500 text-white px-4 py-2 rounded">Cancel</button>
-          </form>
+  <div class="container">
+    <h1 class="title">Books</h1>
+    <button class="btn btn-primary" @click="showCreateModal = true" v-if="isOwner">Add New Book</button>
+
+    <div v-if="errorMessage" class="error-message">{{ errorMessage }}</div>
+
+    <div v-if="books.length" class="book-list">
+      <div v-for="book in books" :key="book.id" class="book-card">
+        <h2 class="book-title">{{ book.title }}</h2>
+        <img v-if="book.image" :src="book.image" alt="Book Image" class="book-image"/>
+        <p class="book-summary">{{ book.summary }}</p>
+        <p class="book-stock">Stock: {{ book.stok }}</p>
+        <p class="book-category">Category: {{ book.category.name }}</p>
+        <div class="book-actions" v-if="isOwner">
+          <button class="btn btn-secondary" @click="editBook(book)">Edit</button>
+          <button class="btn btn-danger" @click="deleteBook(book.id)">Delete</button>
         </div>
       </div>
     </div>
+
+    <!-- Create Book Modal -->
+    <div v-if="showCreateModal" class="modal">
+      <div class="modal-content">
+        <h3>Create Book</h3>
+        <form @submit.prevent="createBook" class="form">
+          <label for="title">Title:</label>
+          <input type="text" v-model="newBook.title" required>
+          
+          <label for="summary">Summary:</label>
+          <textarea v-model="newBook.summary" required></textarea>
+          
+          <label for="stok">Stock:</label>
+          <input type="number" v-model="newBook.stok" required>
+          
+          <label for="category">Category:</label>
+          <select v-model="newBook.category_id" required>
+            <option v-for="category in categories" :key="category.id" :value="category.id">{{ category.name }}</option>
+          </select>
+          
+          <label for="image">Image:</label>
+          <input type="file" @change="handleImageUpload" required>
+          
+          <button type="submit" class="btn btn-primary">Save</button>
+          <button type="button" class="btn btn-secondary" @click="showCreateModal = false">Cancel</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Edit Book Modal -->
+    <div v-if="showEditModal" class="modal">
+      <div class="modal-content">
+        <h3>Edit Book</h3>
+        <form @submit.prevent="updateBook" class="form">
+          <label for="title">Title:</label>
+          <input type="text" v-model="currentBook.title" required>
+          
+          <label for="summary">Summary:</label>
+          <textarea v-model="currentBook.summary" required></textarea>
+          
+          <label for="stok">Stock:</label>
+          <input type="number" v-model="currentBook.stok" required>
+          
+          <label for="category">Category:</label>
+          <select v-model="currentBook.category_id" required>
+            <option v-for="category in categories" :key="category.id" :value="category.id">{{ category.name }}</option>
+          </select>
+          
+          <label for="image">Image:</label>
+          <input type="file" @change="handleEditImageUpload">
+          
+          <button type="submit" class="btn btn-primary">Update</button>
+          <button type="button" class="btn btn-secondary" @click="showEditModal = false">Cancel</button>
+        </form>
+      </div>
+    </div>
+  </div>
 </template>
-  
-<script setup>
+
+<script>
 import { ref, onMounted } from 'vue';
-import apiClient from '../api/axios.js';
+import apiClient from '@/api/axios.js';
 
-const books = ref([]);
-const categories = ref([]);
-const errorMessage = ref('');
-const showCreateModal = ref(false);
-const showEditModal = ref(false);
-const newBook = ref({
-  title: '',
-  summary: '',
-  stok: 0,
-  category_id: 0,
-  image: null
-});
-const currentBook = ref({
-  id: null,
-  title: '',
-  summary: '',
-  stok: 0,
-  category_id: 0,
-  image: null
-});
-const isOwner = ref(false);
+export default {
+  name: 'Books',
+  setup() {
+    const books = ref([]);
+    const categories = ref([]);
+    const newBook = ref({
+      title: '',
+      summary: '',
+      stok: 0,
+      category_id: null,
+      image: null
+    });
+    const currentBook = ref({});
+    const showCreateModal = ref(false);
+    const showEditModal = ref(false);
+    const isOwner = ref(false);
+    const errorMessage = ref('');
 
-const fetchBooks = async () => {
-  try {
-    const response = await apiClient.get('/books');
-    books.value = response.data;
-  } catch (error) {
-    errorMessage.value = 'Error fetching books.';
+    const fetchBooks = async () => {
+      try {
+        const response = await apiClient.get('/books');
+        books.value = response.data;
+      } catch (error) {
+        errorMessage.value = 'Error fetching books.';
+      }
+    };
+
+    const fetchCategories = async () => {
+      try {
+        const response = await apiClient.get('/categories');
+        categories.value = response.data;
+      } catch (error) {
+        errorMessage.value = 'Error fetching categories.';
+      }
+    };
+
+    const checkIsOwner = () => {
+      const userRole = localStorage.getItem('role');
+      isOwner.value = userRole === 'owner';
+    };
+
+    const createBook = async () => {
+      if (!isOwner.value) {
+        errorMessage.value = 'Unauthorized operation.';
+        return;
+      }
+
+      try {
+        const formData = new FormData();
+        formData.append('title', newBook.value.title);
+        formData.append('summary', newBook.value.summary);
+        formData.append('stok', newBook.value.stok);
+        formData.append('category_id', newBook.value.category_id);
+        if (newBook.value.image) {
+          formData.append('image', newBook.value.image);
+        }
+        await apiClient.post('/books', formData);
+        fetchBooks();
+        showCreateModal.value = false;
+      } catch (error) {
+        if (error.response && error.response.data) {
+          const errors = error.response.data.errors;
+          errorMessage.value = `Error creating book: ${Object.values(errors).map(err => err.join(', ')).join(', ')}`;
+        } else {
+          errorMessage.value = 'Error creating book.';
+        }
+      }
+    };
+
+    const editBook = (book) => {
+      if (!isOwner.value) {
+        errorMessage.value = 'Unauthorized operation.';
+        return;
+      }
+
+      currentBook.value = { ...book };
+      showEditModal.value = true;
+    };
+
+    const updateBook = async () => {
+      if (!isOwner.value) {
+        errorMessage.value = 'Unauthorized operation.';
+        return;
+      }
+
+      try {
+        const formData = new FormData();
+        formData.append('title', currentBook.value.title);
+        formData.append('summary', currentBook.value.summary);
+        formData.append('stok', currentBook.value.stok);
+        formData.append('category_id', currentBook.value.category_id);
+        if (currentBook.value.image instanceof File) {
+          formData.append('image', currentBook.value.image);
+        }
+        await apiClient.put(`/books/${currentBook.value.id}`, formData);
+        fetchBooks();
+        showEditModal.value = false;
+      } catch (error) {
+        if (error.response && error.response.data) {
+          const errors = error.response.data.errors;
+          errorMessage.value = `Error updating book: ${Object.values(errors).map(err => err.join(', ')).join(', ')}`;
+        } else {
+          errorMessage.value = 'Error updating book.';
+        }
+      }
+    };
+
+    const deleteBook = async (bookId) => {
+      if (!isOwner.value) {
+        errorMessage.value = 'Unauthorized operation.';
+        return;
+      }
+
+      try {
+        await apiClient.delete(`/books/${bookId}`);
+        fetchBooks();
+      } catch (error) {
+        errorMessage.value = 'Error deleting book.';
+      }
+    };
+
+    const handleImageUpload = (event) => {
+      newBook.value.image = event.target.files[0];
+    };
+
+    const handleEditImageUpload = (event) => {
+      currentBook.value.image = event.target.files[0];
+    };
+
+    onMounted(() => {
+      fetchBooks();
+      fetchCategories();
+      checkIsOwner();
+    });
+
+    return {
+      books,
+      categories,
+      newBook,
+      currentBook,
+      showCreateModal,
+      showEditModal,
+      isOwner,
+      errorMessage,
+      fetchBooks,
+      createBook,
+      editBook,
+      updateBook,
+      deleteBook,
+      handleImageUpload,
+      handleEditImageUpload
+    };
   }
 };
-
-const fetchCategories = async () => {
-  try {
-    const response = await apiClient.get('/categories');
-    categories.value = response.data;
-  } catch (error) {
-    errorMessage.value = 'Error fetching categories.';
-  }
-};
-
-const checkIsOwner = () => {
-  const userRole = localStorage.getItem('role');
-  if (userRole === 'owner') {
-    isOwner.value = true;
-  }
-};
-
-const createBook = async () => {
-  try {
-    const formData = new FormData();
-    formData.append('title', newBook.value.title);
-    formData.append('summary', newBook.value.summary);
-    formData.append('stok', newBook.value.stok);
-    formData.append('category_id', newBook.value.category_id);
-    if (newBook.value.image) {
-      formData.append('image', newBook.value.image);
-    }
-
-    console.log('FormData before sending:', Object.fromEntries(formData.entries())); // Log formData
-
-    const response = await apiClient.post('/books', formData);
-    console.log('Response:', response); // Log the response
-
-    fetchBooks();
-    showCreateModal.value = false;
-  } catch (error) {
-    console.error('Error response:', error.response); // Log the error response
-    if (error.response && error.response.data) {
-      errorMessage.value = `Error creating book: ${JSON.stringify(error.response.data.errors)}`;
-    } else {
-      errorMessage.value = 'Error creating book.';
-    }
-  }
-};
-
-const editBook = (book) => {
-  currentBook.value = { ...book };
-  showEditModal.value = true;
-};
-
-const updateBook = async () => {
-  try {
-    const formData = new FormData();
-    formData.append('title', currentBook.value.title);
-    formData.append('summary', currentBook.value.summary);
-    formData.append('stok', currentBook.value.stok);
-    formData.append('category_id', currentBook.value.category_id);
-    if (currentBook.value.image instanceof File) {
-      formData.append('image', currentBook.value.image);
-    }
-    await apiClient.put(`/books/${currentBook.value.id}`, formData);
-    fetchBooks();
-    showEditModal.value = false;
-  } catch (error) {
-    if (error.response && error.response.data) {
-      errorMessage.value = `Error updating book: ${JSON.stringify(error.response.data.errors)}`;
-    } else {
-      errorMessage.value = 'Error updating book.';
-    }
-  }
-};
-
-const deleteBook = async (id) => {
-  try {
-    await apiClient.delete(`/books/${id}`);
-    mm
-    fetchBooks();
-  } catch (error) {
-    errorMessage.value = 'Error deleting book.';
-  }
-};
-
-const handleImageUpload = (event) => {
-  newBook.value.image = event.target.files[0];
-};
-
-const handleEditImageUpload = (event) => {
-  currentBook.value.image = event.target.files[0];
-};
-
-onMounted(() => {
-  fetchBooks();
-  fetchCategories();
-  checkIsOwner();
-});
 </script>
+
+<style scoped>
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+}
+
+.title {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.btn {
+  margin: 5px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.btn-primary {
+  background-color: #007bff;
+  color: white;
+}
+
+.btn-secondary {
+  background-color: #6c757d;
+  color: white;
+}
+
+.btn-danger {
+  background-color: #dc3545;
+  color: white;
+}
+
+.error-message {
+  color: red;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.book-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+.book-card {
+  background-color: white;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.book-title {
+  font-size: 1.2em;
+  margin-bottom: 10px;
+}
+
+.book-summary {
+  font-size: 0.9em;
+  margin-bottom: 10px;
+}
+
+.book-stock,
+.book-category {
+  font-size: 0.8em;
+  margin-bottom: 5px;
+}
+
+.book-image {
+  width: 100%;
+  height: auto;
+  margin-bottom: 10px;
+}
+
+.book-actions {
+  display: flex;
+  justify-content: space-around;
+}
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-content {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 80%;
+  max-width: 500px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+}
+
+.form label {
+  margin: 10px 0 5px;
+}
+
+.form input,
+.form textarea,
+.form select {
+  padding: 8px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+</style>

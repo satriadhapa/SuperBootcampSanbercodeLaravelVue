@@ -5,6 +5,7 @@ import Home from '@/components/Home.vue';
 import Profile from '@/components/Profile.vue'; 
 import ProfileDisplay from '@/components/ProfileDisplay.vue'; 
 import Book from '@/components/Book.vue'; // Import Book component
+import Category from '@/components/Category.vue';
 
 const routes = [
   { path: '/register', component: Register },
@@ -13,6 +14,7 @@ const routes = [
   { path: '/profile', component: Profile, meta: { requiresAuth: true } },
   { path: '/profile-display', component: ProfileDisplay, meta: { requiresAuth: true } }, 
   { path: '/books', component: Book, meta: { requiresAuth: false } }, // Add route for books
+  { path: '/categories', component: Category, meta: { requiresAuth: false } },
 ];
 
 const router = createRouter({
