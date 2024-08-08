@@ -11,8 +11,7 @@ class CategoryController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('owner');
-        $this->middleware('user')->only(['index', 'show']);
+        $this->middleware('owner')->except(['index', 'show']);
         
     }
      public function show($id)

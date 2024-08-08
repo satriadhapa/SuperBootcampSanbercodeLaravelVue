@@ -15,8 +15,8 @@ class BookRequest extends FormRequest
     {
         return [
             'title' => 'required|string|max:255',
-            'summary' => 'required|nullable|string',
-            'image' => 'required|mimes:jpg,bmp,png',
+            'summary' => 'nullable|string',
+            'image' => 'nullable|mimes:jpg,bmp,png',
             'stok' => 'required|integer',
             'category_id' => 'required|exists:categories,id',
         ];
@@ -26,11 +26,14 @@ class BookRequest extends FormRequest
     {
         return [
             'title.required' => 'Judul harus diisi',
-            'summary.required' => 'Ringkasan harus berupa teks',
+            'summary.string' => 'Ringkasan harus berupa teks',
             'image.mimes' => 'Hanya format JPG, BMP, dan PNG yang diperbolehkan untuk poster',
-           'stok.integer' => 'Stok harus berupa angka',
+            'stok.required' => 'Stok harus diisi',
+            'stok.integer' => 'Stok harus berupa angka',
+            'category_id.required' => 'Kategori harus diisi',
             'category_id.exists' => 'Kategori harus ada di database',
         ];
     }
 }
+
 

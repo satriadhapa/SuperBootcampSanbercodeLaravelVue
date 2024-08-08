@@ -21,6 +21,7 @@ const logout = () => {
       </div>
       <div>
         <router-link to="/" class="mr-4">Home</router-link>
+        <router-link to="/books" class="mr-4">Books</router-link>
         <router-link to="/profile-display" v-if="isLoggedIn" class="mr-4">detail Profile</router-link>
         <router-link to="/profile" v-if="isLoggedIn" class="mr-4">Update Profile</router-link>
         <router-link to="/login" v-if="!isLoggedIn" class="mr-4">Login</router-link>
