@@ -5,7 +5,6 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\BookRequest;
 use App\Models\Book;
-use Illuminate\Support\Facades\Storage;
 
 class BookController extends Controller
 {
@@ -17,12 +16,26 @@ class BookController extends Controller
     public function index()
     {
         $books = Book::with('category')->get();
+
+        // Menambahkan APP_URL ke path image
+        $books->each(function ($book) {
+            if ($book->image) {
+                $book->image = env('APP_URL') . '/images/' . basename($book->image);
+            }
+        });
+
         return response()->json($books);
     }
 
     public function show($id)
     {
         $book = Book::with('category')->findOrFail($id);
+
+        // Menambahkan APP_URL ke path image
+        if ($book->image) {
+            $book->image = env('APP_URL') . '/images/' . basename($book->image);
+        }
+
         return response()->json($book);
     }
 
@@ -30,8 +43,8 @@ class BookController extends Controller
     {
         $url = null;
         if ($request->hasFile('image')) {
-            $path = $request->file('image')->store('images', 'public');
-            $url = 'storage/' . $path;
+            $path = $request->file('image')->move(public_path('images'), $request->file('image')->getClientOriginalName());
+            $url = 'images/' . $request->file('image')->getClientOriginalName();
         }
 
         $book = Book::create([
@@ -42,6 +55,11 @@ class BookController extends Controller
             'category_id' => $request->category_id,
         ]);
 
+        // Menambahkan APP_URL ke path image
+        if ($book->image) {
+            $book->image = env('APP_URL') . '/images/' . basename($book->image);
+        }
+
         return response()->json($book, 201);
     }
 
@@ -51,12 +69,13 @@ class BookController extends Controller
 
         $url = $book->image;
         if ($request->hasFile('image')) {
-            if ($book->image) {
-                Storage::disk('public')->delete(str_replace('/storage/', '', $book->image));
+            // Hapus gambar lama jika ada
+            if ($book->image && file_exists(public_path($book->image))) {
+                unlink(public_path($book->image));
             }
 
-            $path = $request->file('image')->store('images', 'public');
-            $url = 'storage/' . $path;
+            $path = $request->file('image')->move(public_path('images'), $request->file('image')->getClientOriginalName());
+            $url = 'images/' . $request->file('image')->getClientOriginalName();
         }
 
         $book->update([
@@ -67,6 +86,11 @@ class BookController extends Controller
             'category_id' => $request->category_id,
         ]);
 
+        // Menambahkan APP_URL ke path image
+        if ($book->image) {
+            $book->image = env('APP_URL') . '/images/' . basename($book->image);
+        }
+
         return response()->json($book);
     }
 
@@ -74,8 +98,8 @@ class BookController extends Controller
     {
         $book = Book::findOrFail($id);
 
-        if ($book->image) {
-            Storage::disk('public')->delete(str_replace('/storage/', '', $book->image));
+        if ($book->image && file_exists(public_path($book->image))) {
+            unlink(public_path($book->image));
         }
 
         $book->delete();

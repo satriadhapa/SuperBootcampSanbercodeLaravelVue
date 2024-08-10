@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <h1 class="title text-4xl bold">Daftar Buku</h1>
+    <h1 class="title text-4xl font-bold">Daftar Buku</h1>
     <button class="btn btn-primary" @click="showCreateModal = true" v-if="isOwner">Add New Book</button>
 
     <div v-if="errorMessage" class="error-message">{{ errorMessage }}</div>
@@ -8,7 +8,7 @@
     <div v-if="books.length" class="book-list">
       <div v-for="book in books" :key="book.id" class="book-card">
         <h2 class="book-title">{{ book.title }}</h2>
-        <img v-if="book.image" :src="book.image" alt="Book Image" class="book-image"/>
+        <img v-if="book.image" :src="book.image" alt="Book Image" class="book-image" />
         <p class="book-summary">{{ book.summary }}</p>
         <p class="book-stock">Stock: {{ book.stok }}</p>
         <p class="book-category">Kategori: {{ book.category.name }}</p>
@@ -26,13 +26,13 @@
         <h3>Create Book</h3>
         <form @submit.prevent="createBook" class="form">
           <label for="title">Title:</label>
-          <input type="text" v-model="newBook.title" required>
+          <input type="text" v-model="newBook.title" required />
           
           <label for="summary">Summary:</label>
           <textarea v-model="newBook.summary" required></textarea>
           
           <label for="stok">Stock:</label>
-          <input type="number" v-model="newBook.stok" required>
+          <input type="number" v-model="newBook.stok" required />
           
           <label for="category">Category:</label>
           <select v-model="newBook.category_id" required>
@@ -40,7 +40,7 @@
           </select>
           
           <label for="image">Image:</label>
-          <input type="file" @change="handleImageUpload">
+          <input type="file" @change="handleImageUpload" />
           
           <button type="submit" class="btn btn-primary">Save</button>
           <button type="button" class="btn btn-secondary" @click="showCreateModal = false">Cancel</button>
@@ -54,13 +54,13 @@
         <h3>Edit Book</h3>
         <form @submit.prevent="updateBook" class="form">
           <label for="title">Title:</label>
-          <input type="text" v-model="currentBook.title" required>
+          <input type="text" v-model="currentBook.title" required />
           
           <label for="summary">Summary:</label>
           <textarea v-model="currentBook.summary" required></textarea>
           
           <label for="stok">Stock:</label>
-          <input type="number" v-model="currentBook.stok" required>
+          <input type="number" v-model="currentBook.stok" required />
           
           <label for="category">Category:</label>
           <select v-model="currentBook.category_id" required>
@@ -68,7 +68,7 @@
           </select>
           
           <label for="image">Image:</label>
-          <input type="file" @change="handleEditImageUpload">
+          <input type="file" @change="handleEditImageUpload" />
           
           <button type="submit" class="btn btn-primary">Update</button>
           <button type="button" class="btn btn-secondary" @click="showEditModal = false">Cancel</button>
@@ -110,20 +110,25 @@ export default {
     };
 
     const borrowBook = async (bookId) => {
-      try {
-        const response = await apiClient.post('/borrows', {
-          load_date: new Date(),
-          barrow_date: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // Set one week later
-          book_id: bookId,
-          user_id: localStorage.getItem('user_id'), // Assuming user ID is stored in localStorage
-        });
+  try {
+    const response = await apiClient.post('/borrows', {
+      load_date: new Date().toISOString(), // Convert date to ISO string
+      barrow_date: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(), // Set one week later
+      book_id: bookId,
+      user_id: localStorage.getItem('user_id'), // Assuming user ID is stored in localStorage
+    });
 
-        alert('Buku berhasil dipinjam!');
-      } catch (error) {
-        console.error('Error borrowing book:', error);
-        alert('Gagal meminjam buku.');
-      }
-    };
+    alert('Buku berhasil dipinjam!');
+  } catch (error) {
+    if (error.response && error.response.data) {
+      // Handle server validation errors
+      const errors = error.response.data.errors;
+      errorMessage.value = `Error borrowing book: ${Object.values(errors).map(err => err.join(', ')).join(', ')}`;
+    } else {
+      errorMessage.value = 'Gagal meminjam buku.';
+    }
+  }
+};
 
     const fetchCategories = async () => {
       try {
@@ -138,7 +143,9 @@ export default {
       const userRole = localStorage.getItem('role');
       isOwner.value = userRole === 'owner';
     };
-
+    const checkIsLoggedIn = () => {
+      isLoggedIn.value = !!localStorage.getItem('user_id'); // Check if user_id exists
+    };
     const createBook = async () => {
       if (!isOwner.value) {
         errorMessage.value = 'Unauthorized operation.';

@@ -18,18 +18,40 @@ onMounted(fetchProfile);
 </script>
 
 <template>
-  <div class="p-4">
-    <h1 class="text-2xl font-bold mb-4">Profile</h1>
-    <div v-if="errorMessage" class="text-red-500 mt-4">{{ errorMessage }}</div>
-    <div v-else>
-      <p><strong>Bio:</strong> {{ profile.bio }}</p>
-      <p><strong>Age:</strong> {{ profile.age }}</p>
+  <div class="max-w-lg mx-auto mt-10">
+    <h1 class="text-3xl font-bold mb-6 text-center text-blue-600">Profile</h1>
+    
+    <div v-if="errorMessage" class="text-red-500 mt-4 text-center">
+      {{ errorMessage }}
+    </div>
+    
+    <div v-else class="bg-white shadow-lg rounded-lg p-6">
+      <div class="mb-4">
+        <h2 class="text-2xl font-semibold mb-2">Bio</h2>
+        <p class="text-gray-700">{{ profile.bio }}</p>
+      </div>
+      <div>
+        <h2 class="text-2xl font-semibold mb-2">Age</h2>
+        <p class="text-gray-700">{{ profile.age }} Tahun</p>
+      </div>
     </div>
   </div>
 </template>
 
 <style scoped>
-p {
-  margin-bottom: 1rem;
+h1 {
+  color: #1e40af;
+}
+
+.bg-white {
+  background-color: #ffffff;
+}
+
+.shadow-lg {
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+.rounded-lg {
+  border-radius: 0.5rem;
 }
 </style>
