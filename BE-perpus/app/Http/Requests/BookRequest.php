@@ -8,7 +8,7 @@ class BookRequest extends FormRequest
 {
     public function authorize()
     {
-        return true; // Ensure this is set to true or properly handle authorization
+        return true; 
     }
 
     public function rules()

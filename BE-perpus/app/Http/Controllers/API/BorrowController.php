@@ -9,19 +9,19 @@ use Illuminate\Support\Facades\Validator;
 
 class BorrowController extends Controller
 {
-    
     public function __construct()
     {
-        $this->middleware('owner');
+        $this->middleware('owner')->except(['store']);
     }
+
     public function index()
     {
-        return Borrow::all();
+        return response()->json(Borrow::with(['book', 'user'])->get());
     }
 
     public function show($id)
     {
-        return Borrow::findOrFail($id);
+        return response()->json(Borrow::with(['book', 'user'])->findOrFail($id));
     }
 
     public function store(Request $request)
@@ -32,9 +32,11 @@ class BorrowController extends Controller
             'book_id' => 'required|uuid|exists:books,id',
             'user_id' => 'required|uuid|exists:users,id',
         ]);
+
         if ($validator->fails()) {
             return response()->json($validator->errors(), 422);
         }
+
         $currentUser = auth()->user();
 
         $borrowData = Borrow::updateOrCreate(
@@ -43,26 +45,23 @@ class BorrowController extends Controller
                 'load_date' => $request['load_date'],
                 'barrow_date' => $request['barrow_date'],
                 'book_id' => $request['book_id'],
-                'user_id' => $request['user_id'],
+                'user_id' => $currentUser->id,
             ]
-            );
-            return response()->json([
-                'message' => "Pemijaman berhasil dibuat/diubah",
-                'data' => $borrowData
-            ],201);
+        );
+
+        return response()->json([
+            'message' => "Peminjaman berhasil dibuat/diubah",
+            'data' => $borrowData
+        ], 201);
     }
 
     public function update(Request $request, $id)
     {
-        // $borrow = Borrows::findOrFail($id);
-        // $borrow->update($request->all());
-        // return response()->json($borrow);
+        // Method ini dapat diimplementasikan sesuai kebutuhan
     }
 
     public function destroy($id)
     {
-        // Borrows::destroy($id);
-        // return response()->json(['message' => 'Borrow deleted successfully']);
+        // Method ini dapat diimplementasikan sesuai kebutuhan
     }
 }
-

@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-      <h1 class="title">Categories</h1>
+      <h1 class="title text-4xl bold">Daftar Kategori</h1>
       <!-- Bagian ini dapat dilihat oleh semua pengguna -->
       <div v-if="categories.length" class="category-list">
         <div v-for="category in categories" :key="category.id" class="category-card">

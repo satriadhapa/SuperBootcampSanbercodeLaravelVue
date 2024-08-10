@@ -23,8 +23,8 @@ Route::prefix('v1')->group(function () {
         Route::apiResource('roles', RoleController::class);
         Route::apiResource('users', UserController::class);
         Route::apiResource('profiles', ProfileController::class);
-        Route::apiResource('categories', CategoryController::class)->except(['index','show']);
+        Route::apiResource('categories', CategoryController::class)->except(['index', 'show']);
         Route::apiResource('books', BookController::class)->except(['index', 'show']);
-        Route::apiResource('borrows', BorrowController::class);
+        Route::apiResource('borrows', BorrowController::class)->only(['index', 'show', 'store']);
     });
 });

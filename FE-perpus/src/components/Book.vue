@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <h1 class="title">Books</h1>
+    <h1 class="title text-4xl bold">Daftar Buku</h1>
     <button class="btn btn-primary" @click="showCreateModal = true" v-if="isOwner">Add New Book</button>
 
     <div v-if="errorMessage" class="error-message">{{ errorMessage }}</div>
@@ -11,7 +11,8 @@
         <img v-if="book.image" :src="book.image" alt="Book Image" class="book-image"/>
         <p class="book-summary">{{ book.summary }}</p>
         <p class="book-stock">Stock: {{ book.stok }}</p>
-        <p class="book-category">Category: {{ book.category.name }}</p>
+        <p class="book-category">Kategori: {{ book.category.name }}</p>
+        <button class="btn btn-secondary" @click="borrowBook(book.id)" v-if="!isOwner">Pinjam</button>
         <div class="book-actions" v-if="isOwner">
           <button class="btn btn-secondary" @click="editBook(book)">Edit</button>
           <button class="btn btn-danger" @click="deleteBook(book.id)">Delete</button>
@@ -39,7 +40,7 @@
           </select>
           
           <label for="image">Image:</label>
-          <input type="file" @change="handleImageUpload" required>
+          <input type="file" @change="handleImageUpload">
           
           <button type="submit" class="btn btn-primary">Save</button>
           <button type="button" class="btn btn-secondary" @click="showCreateModal = false">Cancel</button>
@@ -105,6 +106,22 @@ export default {
         books.value = response.data;
       } catch (error) {
         errorMessage.value = 'Error fetching books.';
+      }
+    };
+
+    const borrowBook = async (bookId) => {
+      try {
+        const response = await apiClient.post('/borrows', {
+          load_date: new Date(),
+          barrow_date: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // Set one week later
+          book_id: bookId,
+          user_id: localStorage.getItem('user_id'), // Assuming user ID is stored in localStorage
+        });
+
+        alert('Buku berhasil dipinjam!');
+      } catch (error) {
+        console.error('Error borrowing book:', error);
+        alert('Gagal meminjam buku.');
       }
     };
 
@@ -226,12 +243,13 @@ export default {
       isOwner,
       errorMessage,
       fetchBooks,
+      borrowBook,
       createBook,
       editBook,
       updateBook,
       deleteBook,
       handleImageUpload,
-      handleEditImageUpload
+      handleEditImageUpload,
     };
   }
 };
@@ -239,123 +257,104 @@ export default {
 
 <style scoped>
 .container {
-  max-width: 800px;
+  max-width: 1200px;
   margin: 0 auto;
   padding: 20px;
-  background-color: #f9f9f9;
-  border-radius: 8px;
 }
 
 .title {
-  text-align: center;
-  margin-bottom: 20px;
-}
-
-.btn {
-  margin: 5px;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.btn-primary {
-  background-color: #007bff;
-  color: white;
-}
-
-.btn-secondary {
-  background-color: #6c757d;
-  color: white;
-}
-
-.btn-danger {
-  background-color: #dc3545;
-  color: white;
-}
-
-.error-message {
-  color: red;
-  text-align: center;
   margin-bottom: 20px;
 }
 
 .book-list {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  display: flex;
+  flex-wrap: wrap;
   gap: 20px;
 }
 
 .book-card {
-  background-color: white;
-  padding: 15px;
+  border: 1px solid #ddd;
+  padding: 10px;
   border-radius: 8px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  text-align: center;
+  width: 300px;
 }
 
 .book-title {
-  font-size: 1.2em;
+  font-size: 1.5rem;
   margin-bottom: 10px;
-}
-
-.book-summary {
-  font-size: 0.9em;
-  margin-bottom: 10px;
-}
-
-.book-stock,
-.book-category {
-  font-size: 0.8em;
-  margin-bottom: 5px;
 }
 
 .book-image {
-  width: 100%;
+  max-width: 100%;
   height: auto;
+  margin-bottom: 10px;
+}
+
+.book-summary,
+.book-stock,
+.book-category {
   margin-bottom: 10px;
 }
 
 .book-actions {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
+}
+
+.btn {
+  cursor: pointer;
+}
+
+.btn-primary {
+  background-color: #3490dc;
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+}
+
+.btn-secondary {
+  background-color: #6c757d;
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+}
+
+.btn-danger {
+  background-color: #e3342f;
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+}
+
+.error-message {
+  color: red;
+  margin-bottom: 10px;
 }
 
 .modal {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5);
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
 }
 
 .modal-content {
-  background: white;
+  background-color: white;
   padding: 20px;
-  border-radius: 8px;
-  width: 80%;
-  max-width: 500px;
+  border-radius: 10px;
 }
 
 .form {
   display: flex;
   flex-direction: column;
-}
-
-.form label {
-  margin: 10px 0 5px;
-}
-
-.form input,
-.form textarea,
-.form select {
-  padding: 8px;
-  margin-bottom: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+  gap: 10px;
 }
 </style>
