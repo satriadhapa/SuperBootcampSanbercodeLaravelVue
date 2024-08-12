@@ -1,6 +1,6 @@
 <template>
     <div class="borrow-list">
-      <h2>Daftar Peminjaman Buku</h2>
+      <h2 style="text-align: center; font-weight: bold">Daftar Peminjaman Buku</h2>
       <table class="table">
         <thead>
           <tr>
@@ -26,8 +26,7 @@
   
   <script>
   import { ref, onMounted } from 'vue';
-  import axios from 'axios';
-import apiClient from '@/api/axios';
+  import apiClient from '@/api/axios';
   
   export default {
     name: 'BorrowList',

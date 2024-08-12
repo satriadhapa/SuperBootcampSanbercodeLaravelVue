@@ -47,7 +47,6 @@
         </form>
       </div>
     </div>
-
     <!-- Edit Book Modal -->
     <div v-if="showEditModal" class="modal">
       <div class="modal-content">
@@ -112,10 +111,10 @@ export default {
     const borrowBook = async (bookId) => {
   try {
     const response = await apiClient.post('/borrows', {
-      load_date: new Date().toISOString(), // Convert date to ISO string
-      barrow_date: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(), // Set one week later
+      load_date: new Date().toISOString(), 
+      barrow_date: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(), 
       book_id: bookId,
-      user_id: localStorage.getItem('user_id'), // Assuming user ID is stored in localStorage
+      user_id: localStorage.getItem('user_id'),
     });
 
     alert('Buku berhasil dipinjam!');
@@ -280,7 +279,7 @@ export default {
 }
 
 .book-card {
-  border: 1px solid #ddd;
+  border: 2px solid #000000;
   padding: 10px;
   border-radius: 8px;
   width: 300px;
@@ -354,7 +353,7 @@ export default {
 }
 
 .modal-content {
-  background-color: white;
+  background-color: rgb(48, 124, 255);
   padding: 20px;
   border-radius: 10px;
 }
